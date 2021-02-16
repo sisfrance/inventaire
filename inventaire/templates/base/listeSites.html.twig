@@ -1,0 +1,22 @@
+<table class="table">
+<thead>
+	<tr>
+		<th>Site</th>
+		<th>Adresse</th>
+		<th>Code postal</th>
+		<th>Ville</th>
+		<th>Code</th>
+	</tr>
+</thead>
+<tbody>
+	{% for site in sites %}
+	<tr>
+		<td>{{site.nom}}</td>
+		<td>{{site.adresse}}</td>
+		<td>{{site.cp}}</td>
+		<td>{{site.ville}}</td>
+	</tr>
+	{% endfor %}
+</tbody>
+
+</table>
