@@ -1,0 +1,23 @@
+Installations complémentaires
+
+libzip-dev
+wget
+git
+
+Installation de symfony
+
+wget https://get.symfony.com/cli/installer -O - | bash
+
+Creation du conteneur : docker run  -v /home/tomsolete/docker/inventory/app:/usr/src/app -p:80:8000 --name inventory php7/symfony
+
+docker start inventory
+docker exec -it inventory /bin/bash
+
+Fichiers packs à installer 
+require symfony/profiler-pack
+require symfony/orm-pack
+require --dev doctrine/doctrine-fixtures-bundle
+composer require sonata-project/admin-bundle
+composer require symfony/webpack-encore-bundle
+
+
