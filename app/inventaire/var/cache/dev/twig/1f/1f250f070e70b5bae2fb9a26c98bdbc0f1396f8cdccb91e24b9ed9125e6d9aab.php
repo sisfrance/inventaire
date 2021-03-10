@@ -82,6 +82,36 @@ class __TwigTemplate_87ae62c482c9229ac064f72b9df02eff7e3a95bb30aaca6cc7b7ed48e09
 
 </table>
 ";
+        // line 23
+        $context['_parent'] = $context;
+        $context['_seq'] = twig_ensure_traversable((isset($context["postesdetravails"]) || array_key_exists("postesdetravails", $context) ? $context["postesdetravails"] : (function () { throw new RuntimeError('Variable "postesdetravails" does not exist.', 23, $this->source); })()));
+        foreach ($context['_seq'] as $context["_key"] => $context["pdt"]) {
+            // line 24
+            echo "\t<h3>";
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["pdt"], "emplacement", [], "any", false, false, false, 24), "html", null, true);
+            echo "</h3>
+\t<table class=\"table\">
+\t\t<thead>
+\t\t\t<th>ordinateur</th>
+\t\t\t<th>emplacement/th>
+\t\t</thead>
+\t\t<tbody>
+\t\t\t<td>";
+            // line 31
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, $context["pdt"], "pdt", [], "any", false, false, false, 31), "getEmplacement", [], "any", false, false, false, 31), "getNom", [], "any", false, false, false, 31), "html", null, true);
+            echo "</td>
+\t\t\t<td>";
+            // line 32
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, $context["pdt"], "pdt", [], "any", false, false, false, 32), "getOrdinateur", [], "any", false, false, false, 32), "getReference", [], "any", false, false, false, 32), "html", null, true);
+            echo "</td>
+\t\t</tbody>
+\t\t
+\t</table>
+";
+        }
+        $_parent = $context['_parent'];
+        unset($context['_seq'], $context['_iterated'], $context['_key'], $context['pdt'], $context['_parent'], $context['loop']);
+        $context = array_intersect_key($context, $_parent) + $_parent;
         
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->leave($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof);
 
@@ -99,7 +129,7 @@ class __TwigTemplate_87ae62c482c9229ac064f72b9df02eff7e3a95bb30aaca6cc7b7ed48e09
 
     public function getDebugInfo()
     {
-        return array (  81 => 20,  72 => 17,  68 => 16,  64 => 15,  60 => 14,  57 => 13,  53 => 12,  40 => 1,);
+        return array (  105 => 32,  101 => 31,  90 => 24,  86 => 23,  81 => 20,  72 => 17,  68 => 16,  64 => 15,  60 => 14,  57 => 13,  53 => 12,  40 => 1,);
     }
 
     public function getSourceContext()
@@ -126,6 +156,20 @@ class __TwigTemplate_87ae62c482c9229ac064f72b9df02eff7e3a95bb30aaca6cc7b7ed48e09
 </tbody>
 
 </table>
+{% for pdt in postesdetravails %}
+\t<h3>{{pdt.emplacement}}</h3>
+\t<table class=\"table\">
+\t\t<thead>
+\t\t\t<th>ordinateur</th>
+\t\t\t<th>emplacement/th>
+\t\t</thead>
+\t\t<tbody>
+\t\t\t<td>{{pdt.pdt.getEmplacement.getNom}}</td>
+\t\t\t<td>{{pdt.pdt.getOrdinateur.getReference}}</td>
+\t\t</tbody>
+\t\t
+\t</table>
+{% endfor %}
 ", "base/listeSites.html.twig", "/usr/src/app/inventaire/templates/base/listeSites.html.twig");
     }
 }

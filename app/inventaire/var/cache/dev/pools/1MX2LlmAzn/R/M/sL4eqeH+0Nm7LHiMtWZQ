@@ -17,6 +17,9 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'name' => [
                 1 => 'typeperipherique_id',
             ],
+            'referencedColumnName' => [
+                1 => 'Id',
+            ],
         ],
     ],
     [

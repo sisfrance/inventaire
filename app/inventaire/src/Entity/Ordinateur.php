@@ -106,6 +106,11 @@ class Ordinateur
      */
     private $yes;
 
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $nom_pc;
+
     public function __construct()
     {
         $this->peripheriques = new ArrayCollection();
@@ -373,6 +378,18 @@ class Ordinateur
                 $ye->setOrdinateur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNomPc(): ?string
+    {
+        return $this->nom_pc;
+    }
+
+    public function setNomPc(?string $nom_pc): self
+    {
+        $this->nom_pc = $nom_pc;
 
         return $this;
     }

@@ -20,13 +20,13 @@ final class Version20210115143947 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE vpn (id INT AUTO_INCREMENT NOT NULL, utilisateur_id INT DEFAULT NULL, compte VARCHAR(25) NOT NULL, mdp VARCHAR(150) NOT NULL, INDEX IDX_2A08F859FB88E14F (utilisateur_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE vpn ADD CONSTRAINT FK_2A08F859FB88E14F FOREIGN KEY (utilisateur_id) REFERENCES utilisateur (id)');
+        //$this->addSql('CREATE TABLE vpn (id INT AUTO_INCREMENT NOT NULL, utilisateur_id INT DEFAULT NULL, compte VARCHAR(25) NOT NULL, mdp VARCHAR(150) NOT NULL, INDEX IDX_2A08F859FB88E14F (utilisateur_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        //$this->addSql('ALTER TABLE vpn ADD CONSTRAINT FK_2A08F859FB88E14F FOREIGN KEY (utilisateur_id) REFERENCES utilisateur (id)');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE vpn');
+        //$this->addSql('DROP TABLE vpn');
     }
 }

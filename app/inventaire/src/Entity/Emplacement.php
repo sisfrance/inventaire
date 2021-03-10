@@ -15,7 +15,7 @@ class Emplacement
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="Id",type="integer")
      * 
      */
     private $id;

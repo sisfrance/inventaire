@@ -20,3 +20,17 @@
 </tbody>
 
 </table>
+{% for pdt in postesdetravails %}
+	<h3>{{pdt.emplacement}}</h3>
+	<table class="table">
+		<thead>
+			<th>ordinateur</th>
+			<th>emplacement/th>
+		</thead>
+		<tbody>
+			<td>{{pdt.pdt.getEmplacement.getNom}}</td>
+			<td>{{pdt.pdt.getOrdinateur.getReference}}</td>
+		</tbody>
+		
+	</table>
+{% endfor %}

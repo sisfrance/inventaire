@@ -52,10 +52,13 @@ class BaseController extends AbstractController
      {
 		$clientRepository=$this->getDoctrine()->getManager()->getRepository('App\Entity\Client');
 		$client=$clientRepository->find($id);
+		$postedetravailRepository=$this->getDoctrine()->getManager()->getRepository('App\Entity\Site');
+		$postesdetravails=$postedetravailRepository->findPDT(1);
 		return $this->render('base/index.html.twig', [
 		'partial'=>'base/listeSites.html.twig',
 		'sites'=>$client->getSites(),
-		'clients'=>$this->render_clients()
+		'clients'=>$this->render_clients(),
+		'postesdetravails'=>$postesdetravails
 		]);
 	}
 	/**

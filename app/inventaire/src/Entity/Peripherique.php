@@ -21,7 +21,7 @@ class Peripherique
 
     /**
      * @ORM\ManyToOne(targetEntity=TypePeripherique::class, inversedBy="peripheriques")
-     * @ORM\JoinColumn(name="typeperipherique_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="typeperipherique_id", referencedColumnName="Id")
      */
     private $type_peripherique;
 
