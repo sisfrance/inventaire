@@ -25,7 +25,7 @@ class Site
     private $site;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=150,nullable=true)
      */
     private $adresse;
 
