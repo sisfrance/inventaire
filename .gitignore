@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+app/inventaire/.env
+app/inventaire/migrations
+=======
 
 ###> symfony/framework-bundle ###
 /.env
@@ -23,3 +27,4 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+>>>>>>> b0e2b025840e27b139bf28c8f7c4062269b86287
