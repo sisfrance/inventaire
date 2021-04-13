@@ -54,6 +54,11 @@ class Utilisateur
      */
     private $vpns;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="utilisateurs")
+     */
+    private $service;
+
     public function __construct()
     {
         $this->ordinateurs = new ArrayCollection();
@@ -197,6 +202,18 @@ class Utilisateur
                 $vpn->setUtilisateur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): self
+    {
+        $this->service = $service;
 
         return $this;
     }
