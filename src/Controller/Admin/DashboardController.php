@@ -22,6 +22,7 @@ use App\Entity\Processeur;
 use App\Entity\Session;
 use App\Entity\Site;
 use App\Entity\Systeme;
+use App\Entity\Service;
 use App\Entity\TypeOrdinateur;
 use App\Entity\TypePeripherique;
 use App\Entity\Utilisateur;
@@ -60,6 +61,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Périphérique','fa fa-list',Peripherique::class);
         yield MenuItem::linkToCrud('Processeur','fa fa-list',Processeur::class);
         yield MenuItem::linkToCrud('Session','fa fa-list',Session::class);
+        yield MenuItem::linkToCrud('Service','fa fa-list',Service::class);
         yield MenuItem::linkToCrud('Site','fa fa-list',Site::class);
         yield MenuItem::linkToCrud('Systeme','fa fa-list',Systeme::class);
         yield MenuItem::linkToCrud('TypeOrdinateur','fa fa-list',TypeOrdinateur::class);
