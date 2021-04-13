@@ -18,12 +18,12 @@ class Vpn
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=25)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $compte;
+    private $identifiant;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $mdp;
 
@@ -37,14 +37,14 @@ class Vpn
         return $this->id;
     }
 
-    public function getCompte(): ?string
+    public function getIdentifiant(): ?string
     {
-        return $this->compte;
+        return $this->identifiant;
     }
 
-    public function setCompte(string $compte): self
+    public function setIdentifiant(?string $identifiant): self
     {
-        $this->compte = $compte;
+        $this->identifiant = $identifiant;
 
         return $this;
     }
@@ -54,7 +54,7 @@ class Vpn
         return $this->mdp;
     }
 
-    public function setMdp(string $mdp): self
+    public function setMdp(?string $mdp): self
     {
         $this->mdp = $mdp;
 

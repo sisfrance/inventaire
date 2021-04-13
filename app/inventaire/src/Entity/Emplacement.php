@@ -15,22 +15,19 @@ class Emplacement
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(name="Id",type="integer")
-     * 
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $etage;
-
-
+    private $emplacement;
 
     /**
-     * @ORM\Column(type="string", length=30, nullable=true)
+     * @ORM\ManyToOne(targetEntity=Site::class, inversedBy="emplacements")
      */
-    private $numero;
+    private $site;
 
     /**
      * @ORM\OneToMany(targetEntity=Peripherique::class, mappedBy="emplacement")
@@ -38,30 +35,20 @@ class Emplacement
     private $peripheriques;
 
     /**
-     * @ORM\OneToMany(targetEntity=Ordinateur::class, mappedBy="emplacement")
+     * @ORM\OneToMany(targetEntity=Utilisateur::class, mappedBy="emplacement")
      */
-    private $ordinateurs;
+    private $utilisateurs;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\OneToMany(targetEntity=Service::class, mappedBy="emplacement")
      */
-    private $batiment;
-
-    /**
-     * @ORM\OneToMany(targetEntity=PosteDeTravail::class, mappedBy="emplacement")
-     */
-    private $posteDeTravails;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Site::class, inversedBy="emplacements")
-     */
-    private $site;
+    private $services;
 
     public function __construct()
     {
         $this->peripheriques = new ArrayCollection();
-        $this->ordinateurs = new ArrayCollection();
-        $this->posteDeTravails = new ArrayCollection();
+        $this->utilisateurs = new ArrayCollection();
+        $this->services = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -69,34 +56,29 @@ class Emplacement
         return $this->id;
     }
 
-    public function getEtage(): ?string
+    public function getEmplacement(): ?string
     {
-        return $this->etage;
+        return $this->emplacement;
     }
 
-    public function setEtage(string $etage): self
+    public function setEmplacement(?string $emplacement): self
     {
-        $this->etage = $etage;
+        $this->emplacement = $emplacement;
 
         return $this;
     }
 
-
-    public function getNumero(): ?string
+    public function getSite(): ?Site
     {
-        return $this->numero;
+        return $this->site;
     }
 
-    public function setNumero(?string $numero): self
+    public function setSite(?Site $site): self
     {
-        $this->numero = $numero;
+        $this->site = $site;
 
         return $this;
     }
-    public function __toString(): ?string
-    {
-	    return $this->getService();	
-	}
 
     /**
      * @return Collection|Peripherique[]
@@ -129,85 +111,61 @@ class Emplacement
     }
 
     /**
-     * @return Collection|Ordinateur[]
+     * @return Collection|Utilisateur[]
      */
-    public function getOrdinateurs(): Collection
+    public function getUtilisateurs(): Collection
     {
-        return $this->ordinateurs;
+        return $this->utilisateurs;
     }
 
-    public function addOrdinateur(Ordinateur $ordinateur): self
+    public function addUtilisateur(Utilisateur $utilisateur): self
     {
-        if (!$this->ordinateurs->contains($ordinateur)) {
-            $this->ordinateurs[] = $ordinateur;
-            $ordinateur->setEmplacement($this);
+        if (!$this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs[] = $utilisateur;
+            $utilisateur->setEmplacement($this);
         }
 
         return $this;
     }
 
-    public function removeOrdinateur(Ordinateur $ordinateur): self
+    public function removeUtilisateur(Utilisateur $utilisateur): self
     {
-        if ($this->ordinateurs->removeElement($ordinateur)) {
+        if ($this->utilisateurs->removeElement($utilisateur)) {
             // set the owning side to null (unless already changed)
-            if ($ordinateur->getEmplacement() === $this) {
-                $ordinateur->setEmplacement(null);
+            if ($utilisateur->getEmplacement() === $this) {
+                $utilisateur->setEmplacement(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getBatiment(): ?string
-    {
-        return $this->batiment;
-    }
-
-    public function setBatiment(?string $batiment): self
-    {
-        $this->batiment = $batiment;
 
         return $this;
     }
 
     /**
-     * @return Collection|PosteDeTravail[]
+     * @return Collection|Service[]
      */
-    public function getPosteDeTravails(): Collection
+    public function getServices(): Collection
     {
-        return $this->posteDeTravails;
+        return $this->services;
     }
 
-    public function addPosteDeTravail(PosteDeTravail $posteDeTravail): self
+    public function addService(Service $service): self
     {
-        if (!$this->posteDeTravails->contains($posteDeTravail)) {
-            $this->posteDeTravails[] = $posteDeTravail;
-            $posteDeTravail->setEmplacement($this);
+        if (!$this->services->contains($service)) {
+            $this->services[] = $service;
+            $service->setEmplacement($this);
         }
 
         return $this;
     }
 
-    public function removePosteDeTravail(PosteDeTravail $posteDeTravail): self
+    public function removeService(Service $service): self
     {
-        if ($this->posteDeTravails->removeElement($posteDeTravail)) {
+        if ($this->services->removeElement($service)) {
             // set the owning side to null (unless already changed)
-            if ($posteDeTravail->getEmplacement() === $this) {
-                $posteDeTravail->setEmplacement(null);
+            if ($service->getEmplacement() === $this) {
+                $service->setEmplacement(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getSite(): ?Site
-    {
-        return $this->site;
-    }
-
-    public function setSite(?Site $site): self
-    {
-        $this->site = $site;
 
         return $this;
     }

@@ -15,48 +15,44 @@ class Peripherique
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(name="Id",type="integer")
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TypePeripherique::class, inversedBy="peripheriques")
-     * @ORM\JoinColumn(name="typeperipherique_id", referencedColumnName="Id")
-     */
-    private $type_peripherique;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Modele::class, inversedBy="yes")
-     * @ORM\JoinColumn(name="typeperipherique_id", referencedColumnName="Id")
-     */
-    private $modele;
-
-    /**
-     * @ORM\Column(type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
     private $reference;
 
     /**
-     * @ORM\Column(type="string", length=30, nullable=true)
+     * @ORM\Column(type="string", length=150)
      */
-    private $serialnumber;
+    private $serial_number;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TypePeripherique::class)
+     */
+    private $type_peripherique;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Modele::class, inversedBy="peripheriques")
+     */
+    private $modele;
 
     /**
      * @ORM\ManyToOne(targetEntity=Emplacement::class, inversedBy="peripheriques")
-     * @ORM\JoinColumn(name="emplacement_id", referencedColumnName="Id")
      */
     private $emplacement;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * 
      */
     private $notes;
 
     /**
-     * @ORM\Column(type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $ipadresse;
+    private $adresse_ip;
 
     /**
      * @ORM\ManyToMany(targetEntity=Ordinateur::class, mappedBy="peripheriques")
@@ -73,30 +69,6 @@ class Peripherique
         return $this->id;
     }
 
-    public function getTypePeripherique(): ?TypePeripherique
-    {
-        return $this->type_peripherique;
-    }
-
-    public function setTypePeripherique(?TypePeripherique $type_peripherique): self
-    {
-        $this->type_peripherique = $peripherique;
-
-        return $this;
-    }
-
-    public function getModele(): ?Modele
-    {
-        return $this->modele;
-    }
-
-    public function setModele(?Modele $modele): self
-    {
-        $this->modele = $modele;
-
-        return $this;
-    }
-
     public function getReference(): ?string
     {
         return $this->reference;
@@ -109,14 +81,38 @@ class Peripherique
         return $this;
     }
 
-    public function getSerialnumber(): ?string
+    public function getSerialNumber(): ?string
     {
-        return $this->serialnumber;
+        return $this->serial_number;
     }
 
-    public function setSerialnumber(?string $serialnumber): self
+    public function setSerialNumber(string $serial_number): self
     {
-        $this->serialnumber = $serialnumber;
+        $this->serial_number = $serial_number;
+
+        return $this;
+    }
+
+    public function getTypePeripherique(): ?TypePeripherique
+    {
+        return $this->type_peripherique;
+    }
+
+    public function setTypePeripherique(?TypePeripherique $type_peripherique): self
+    {
+        $this->type_peripherique = $type_peripherique;
+
+        return $this;
+    }
+
+    public function getModele(): ?Modele
+    {
+        return $this->modele;
+    }
+
+    public function setModele(?Modele $modele): self
+    {
+        $this->modele = $modele;
 
         return $this;
     }
@@ -145,14 +141,14 @@ class Peripherique
         return $this;
     }
 
-    public function getIpadresse(): ?string
+    public function getAdresseIp(): ?string
     {
-        return $this->ipadresse;
+        return $this->adresse_ip;
     }
 
-    public function setIpadresse(?string $ipadresse): self
+    public function setAdresseIp(?string $adresse_ip): self
     {
-        $this->ipadresse = $ipadresse;
+        $this->adresse_ip = $adresse_ip;
 
         return $this;
     }

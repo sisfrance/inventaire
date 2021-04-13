@@ -35,13 +35,6 @@ class MarqueRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function findAllMarque()
-    {
-		return $this->createQueryBuilder('m')
-					->getQuery()
-					->getResult()
-					;
-	}
 
     /*
     public function findOneBySomeField($value): ?Marque

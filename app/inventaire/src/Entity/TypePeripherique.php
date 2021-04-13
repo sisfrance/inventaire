@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\TypePeripheriqueRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,90 +13,29 @@ class TypePeripherique
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(name="Id",type="integer")
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $type;
-
-    /**
-     * @ORM\Column(type="string", length=5, nullable=true)
-     */
-    private $abr;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Peripherique::class, mappedBy="relation")
-     */
-    private $peripheriques;
-
-    public function __construct()
-    {
-        $this->peripheriques = new ArrayCollection();
-    }
+    private $type_peripherique;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getTypePeripherique(): ?string
     {
-        return $this->type;
+        return $this->type_peripherique;
     }
 
-    public function setType(string $type): self
+    public function setTypePeripherique(?string $type_peripherique): self
     {
-        $this->type = $type;
+        $this->type_peripherique = $type_peripherique;
 
         return $this;
     }
-
-    public function getAbr(): ?string
-    {
-        return $this->abr;
-    }
-
-    public function setAbr(?string $abr): self
-    {
-        $this->abr = $abr;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Peripherique[]
-     */
-    public function getPeripheriques(): Collection
-    {
-        return $this->peripheriques;
-    }
-
-    public function addPeripherique(Peripherique $peripherique): self
-    {
-        if (!$this->peripheriques->contains($peripherique)) {
-            $this->peripheriques[] = $peripherique;
-            $peripherique->setRelation($this);
-        }
-
-        return $this;
-    }
-
-    public function removePeripherique(Peripherique $peripherique): self
-    {
-        if ($this->peripheriques->removeElement($peripherique)) {
-            // set the owning side to null (unless already changed)
-            if ($peripherique->getRelation() === $this) {
-                $peripherique->setRelation(null);
-            }
-        }
-
-        return $this;
-    }
-    public function __toString(): ?string
-    {
-		return $this->getType();
-	}
 }

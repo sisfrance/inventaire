@@ -1,6 +1,20 @@
 CHANGELOG
 =========
 
+5.2.0
+-----
+
+ * added support for symfony/uid as `UlidType` and `UuidType` as Doctrine types
+ * added `UlidGenerator`, `UuidV1Generator`, `UuidV4Generator` and `UuidV6Generator`
+
+5.0.0
+-----
+
+ * the `getMetadataDriverClass()` method is abstract and must be implemented by class extending `AbstractDoctrineExtension`
+ * passing an `IdReader` to the `DoctrineChoiceLoader` when the query cannot be optimized with single id field, throws an exception; pass `null` instead
+ * not explicitly passing an instance of `IdReader` to `DoctrineChoiceLoader` when it can optimize single id field, will not apply any optimization
+ * `DoctrineExtractor` now requires an `EntityManagerInterface` on instantiation
+
 4.4.0
 -----
 

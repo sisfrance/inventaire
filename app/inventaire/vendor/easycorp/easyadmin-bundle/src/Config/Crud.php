@@ -2,6 +2,7 @@
 
 namespace EasyCorp\Bundle\EasyAdminBundle\Config;
 
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\SortOrder;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\CrudDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\PaginatorDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
@@ -24,6 +25,7 @@ class Crud
     private $dto;
 
     private $paginatorPageSize = 15;
+    private $paginatorRangeSize = 3;
     private $paginatorFetchJoinCollection = true;
     private $paginatorUseOutputWalkers;
 
@@ -192,8 +194,8 @@ class Crud
     {
         $sortFieldsAndOrder = array_map('strtoupper', $sortFieldsAndOrder);
         foreach ($sortFieldsAndOrder as $sortField => $sortOrder) {
-            if (!\in_array($sortOrder, ['ASC', 'DESC'])) {
-                throw new \InvalidArgumentException(sprintf('The sort order can be only "ASC" or "DESC", "%s" given.', $sortOrder));
+            if (!\in_array($sortOrder, [SortOrder::ASC, SortOrder::DESC], true)) {
+                throw new \InvalidArgumentException(sprintf('The sort order can be only "%s" or "%s", "%s" given.', SortOrder::ASC, SortOrder::DESC, $sortOrder));
             }
 
             if (!\is_string($sortField)) {
@@ -230,10 +232,21 @@ class Crud
     public function setPaginatorPageSize(int $maxResultsPerPage): self
     {
         if ($maxResultsPerPage < 1) {
-            throw new \InvalidArgumentException(sprintf('The minimum value of paginator page size is 1.'));
+            throw new \InvalidArgumentException('The minimum value of paginator page size is 1.');
         }
 
         $this->paginatorPageSize = $maxResultsPerPage;
+
+        return $this;
+    }
+
+    public function setPaginatorRangeSize(int $maxPagesOnEachSide): self
+    {
+        if ($maxPagesOnEachSide < 0) {
+            throw new \InvalidArgumentException('The minimum value of paginator range size is 0.');
+        }
+
+        $this->paginatorRangeSize = $maxPagesOnEachSide;
 
         return $this;
     }
@@ -325,7 +338,7 @@ class Crud
 
     public function getAsDto(): CrudDto
     {
-        $this->dto->setPaginator(new PaginatorDto($this->paginatorPageSize, $this->paginatorFetchJoinCollection, $this->paginatorUseOutputWalkers));
+        $this->dto->setPaginator(new PaginatorDto($this->paginatorPageSize, $this->paginatorRangeSize, 1, $this->paginatorFetchJoinCollection, $this->paginatorUseOutputWalkers));
 
         return $this->dto;
     }

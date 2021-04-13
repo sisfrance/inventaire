@@ -15,7 +15,7 @@ class Modele
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(name="Id",type="integer")
+     * @ORM\Column(type="integer")
      */
     private $id;
 
@@ -26,19 +26,13 @@ class Modele
 
     /**
      * @ORM\ManyToOne(targetEntity=Marque::class, inversedBy="modeles")
-     * @ORM\JoinColumn(name="marque_id", referencedColumnName="Id")
      */
     private $marque;
 
     /**
-     * @ORM\OneToMany(targetEntity=Telephone::class, mappedBy="modele")
-     */
-    private $telephones;
-
-    /**
      * @ORM\OneToMany(targetEntity=Peripherique::class, mappedBy="modele")
      */
-    private $yes;
+    private $peripheriques;
 
     /**
      * @ORM\OneToMany(targetEntity=Ordinateur::class, mappedBy="modele")
@@ -47,8 +41,7 @@ class Modele
 
     public function __construct()
     {
-        $this->telephones = new ArrayCollection();
-        $this->yes = new ArrayCollection();
+        $this->peripheriques = new ArrayCollection();
         $this->ordinateurs = new ArrayCollection();
     }
 
@@ -82,59 +75,29 @@ class Modele
     }
 
     /**
-     * @return Collection|Telephone[]
-     */
-    public function getTelephones(): Collection
-    {
-        return $this->telephones;
-    }
-
-    public function addTelephone(Telephone $telephone): self
-    {
-        if (!$this->telephones->contains($telephone)) {
-            $this->telephones[] = $telephone;
-            $telephone->setModele($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTelephone(Telephone $telephone): self
-    {
-        if ($this->telephones->removeElement($telephone)) {
-            // set the owning side to null (unless already changed)
-            if ($telephone->getModele() === $this) {
-                $telephone->setModele(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Peripherique[]
      */
-    public function getYes(): Collection
+    public function getPeripheriques(): Collection
     {
-        return $this->yes;
+        return $this->peripheriques;
     }
 
-    public function addYe(Peripherique $ye): self
+    public function addPeripherique(Peripherique $peripherique): self
     {
-        if (!$this->yes->contains($ye)) {
-            $this->yes[] = $ye;
-            $ye->setModele($this);
+        if (!$this->peripheriques->contains($peripherique)) {
+            $this->peripheriques[] = $peripherique;
+            $peripherique->setModele($this);
         }
 
         return $this;
     }
 
-    public function removeYe(Peripherique $ye): self
+    public function removePeripherique(Peripherique $peripherique): self
     {
-        if ($this->yes->removeElement($ye)) {
+        if ($this->peripheriques->removeElement($peripherique)) {
             // set the owning side to null (unless already changed)
-            if ($ye->getModele() === $this) {
-                $ye->setModele(null);
+            if ($peripherique->getModele() === $this) {
+                $peripherique->setModele(null);
             }
         }
 
@@ -170,9 +133,4 @@ class Modele
 
         return $this;
     }
-    
-    public function __toString():string
-    {
-			return $this->getModele();
-	}
 }

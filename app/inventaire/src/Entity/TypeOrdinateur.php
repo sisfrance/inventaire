@@ -15,17 +15,22 @@ class TypeOrdinateur
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(name="Id",type="integer")
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $type;
+    private $type_ordinateur;
 
     /**
-     * @ORM\OneToMany(targetEntity=Ordinateur::class, mappedBy="type")
+     * @ORM\Column(type="string", length=5, nullable=true)
+     */
+    private $abr;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Ordinateur::class, mappedBy="type_ordinateur")
      */
     private $ordinateurs;
 
@@ -39,21 +44,29 @@ class TypeOrdinateur
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getTypeOrdinateur(): ?string
     {
-        return $this->type;
+        return $this->type_ordinateur;
     }
 
-    public function setType(string $type): self
+    public function setTypeOrdinateur(?string $type_ordinateur): self
     {
-        $this->type = $type;
+        $this->type_ordinateur = $type_ordinateur;
 
         return $this;
     }
-    public function __toString(): ?string
+
+    public function getAbr(): ?string
     {
-	    return $this->getType();
-	}
+        return $this->abr;
+    }
+
+    public function setAbr(?string $abr): self
+    {
+        $this->abr = $abr;
+
+        return $this;
+    }
 
     /**
      * @return Collection|Ordinateur[]
@@ -67,7 +80,7 @@ class TypeOrdinateur
     {
         if (!$this->ordinateurs->contains($ordinateur)) {
             $this->ordinateurs[] = $ordinateur;
-            $ordinateur->setType($this);
+            $ordinateur->setTypeOrdinateur($this);
         }
 
         return $this;
@@ -77,8 +90,8 @@ class TypeOrdinateur
     {
         if ($this->ordinateurs->removeElement($ordinateur)) {
             // set the owning side to null (unless already changed)
-            if ($ordinateur->getType() === $this) {
-                $ordinateur->setType(null);
+            if ($ordinateur->getTypeOrdinateur() === $this) {
+                $ordinateur->setTypeOrdinateur(null);
             }
         }
 

@@ -4,6 +4,7 @@ namespace EasyCorp\Bundle\EasyAdminBundle\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\TextAlign;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto;
 
 /**
@@ -54,7 +55,7 @@ trait FieldTrait
         return $this;
     }
 
-    public function formatValue(callable $callable): self
+    public function formatValue(?callable $callable): self
     {
         $this->dto->setFormatValueCallable($callable);
 
@@ -128,7 +129,7 @@ trait FieldTrait
      */
     public function setTextAlign(string $textAlign): self
     {
-        $validOptions = ['left', 'center', 'right'];
+        $validOptions = [TextAlign::LEFT, TextAlign::CENTER, TextAlign::RIGHT];
         if (!\in_array($textAlign, $validOptions, true)) {
             throw new \InvalidArgumentException(sprintf('The value of the "textAlign" option can only be one of these: "%s" ("%s" was given).', implode(',', $validOptions), $textAlign));
         }
@@ -147,7 +148,7 @@ trait FieldTrait
 
     public function addCssClass(string $cssClass): self
     {
-        $this->dto->setCssClass(trim($this->dto->getCssClass().' '.$cssClass));
+        $this->dto->setCssClass($this->dto->getCssClass().' '.$cssClass);
 
         return $this;
     }
@@ -178,6 +179,19 @@ trait FieldTrait
     {
         $this->dto->setTemplateName(null);
         $this->dto->setTemplatePath($path);
+
+        return $this;
+    }
+
+    public function addWebpackEncoreEntries(string ...$entryNames): self
+    {
+        if (!class_exists('Symfony\\WebpackEncoreBundle\\Twig\\EntryFilesTwigExtension')) {
+            throw new \RuntimeException('You are trying to add Webpack Encore entries in a field but Webpack Encore is not installed in your project. Try running "composer req symfony/webpack-encore-bundle"');
+        }
+
+        foreach ($entryNames as $entryName) {
+            $this->dto->addWebpackEncoreEntry($entryName);
+        }
 
         return $this;
     }

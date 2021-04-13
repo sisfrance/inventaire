@@ -15,22 +15,37 @@ class Fournisseur
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(name="Id",type="integer")
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $raison_sociale;
+    private $fournisseur;
 
     /**
-     * @ORM\Column(type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=100)
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $cp;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $ville;
+
+    /**
+     * @ORM\Column(type="string", length=12, nullable=true)
      */
     private $telephone;
 
     /**
-     * @ORM\Column(type="string", length=150, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $mail;
 
@@ -49,14 +64,50 @@ class Fournisseur
         return $this->id;
     }
 
-    public function getRaisonSociale(): ?string
+    public function getFournisseur(): ?string
     {
-        return $this->raison_sociale;
+        return $this->fournisseur;
     }
 
-    public function setRaisonSociale(string $raison_sociale): self
+    public function setFournisseur(?string $fournisseur): self
     {
-        $this->raison_sociale = $raison_sociale;
+        $this->fournisseur = $fournisseur;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getCp(): ?string
+    {
+        return $this->cp;
+    }
+
+    public function setCp(?string $cp): self
+    {
+        $this->cp = $cp;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?string $ville): self
+    {
+        $this->ville = $ville;
 
         return $this;
     }
@@ -84,10 +135,6 @@ class Fournisseur
 
         return $this;
     }
-    public function __toString(): ?string 
-    {
-	    return $this->getRaisonSociale();	
-	}
 
     /**
      * @return Collection|Ordinateur[]

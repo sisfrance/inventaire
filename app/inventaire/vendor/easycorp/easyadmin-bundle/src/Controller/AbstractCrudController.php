@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
@@ -43,6 +44,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityUpdater;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\FieldProvider;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -94,6 +96,7 @@ abstract class AbstractCrudController extends AbstractController implements Crud
             'event_dispatcher' => '?'.EventDispatcherInterface::class,
             ActionFactory::class => '?'.ActionFactory::class,
             AdminContextProvider::class => '?'.AdminContextProvider::class,
+            AdminUrlGenerator::class => '?'.AdminUrlGenerator::class,
             ControllerFactory::class => '?'.ControllerFactory::class,
             CrudUrlGenerator::class => '?'.CrudUrlGenerator::class,
             EntityFactory::class => '?'.EntityFactory::class,
@@ -226,9 +229,9 @@ abstract class AbstractCrudController extends AbstractController implements Crud
 
             $this->get('event_dispatcher')->dispatch(new AfterEntityUpdatedEvent($entityInstance));
 
-            $submitButtonName = $context->getRequest()->request->get('ea')['newForm']['btn'];
+            $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'];
             if (Action::SAVE_AND_CONTINUE === $submitButtonName) {
-                $url = $this->get(CrudUrlGenerator::class)->build()
+                $url = $this->get(AdminUrlGenerator::class)
                     ->setAction(Action::EDIT)
                     ->setEntityId($context->getEntity()->getPrimaryKeyValue())
                     ->generateUrl();
@@ -238,7 +241,7 @@ abstract class AbstractCrudController extends AbstractController implements Crud
 
             if (Action::SAVE_AND_RETURN === $submitButtonName) {
                 $url = empty($context->getReferrer())
-                    ? $this->get(CrudUrlGenerator::class)->build()->setAction(Action::INDEX)->generateUrl()
+                    ? $this->get(AdminUrlGenerator::class)->setAction(Action::INDEX)->generateUrl()
                     : $context->getReferrer();
 
                 return $this->redirect($url);
@@ -301,9 +304,9 @@ abstract class AbstractCrudController extends AbstractController implements Crud
             $this->get('event_dispatcher')->dispatch(new AfterEntityPersistedEvent($entityInstance));
             $context->getEntity()->setInstance($entityInstance);
 
-            $submitButtonName = $context->getRequest()->request->get('ea')['newForm']['btn'];
+            $submitButtonName = $context->getRequest()->request->all()['ea']['newForm']['btn'];
             if (Action::SAVE_AND_CONTINUE === $submitButtonName) {
-                $url = $this->get(CrudUrlGenerator::class)->build()
+                $url = $this->get(AdminUrlGenerator::class)
                     ->setAction(Action::EDIT)
                     ->setEntityId($context->getEntity()->getPrimaryKeyValue())
                     ->generateUrl();
@@ -313,13 +316,13 @@ abstract class AbstractCrudController extends AbstractController implements Crud
 
             if (Action::SAVE_AND_RETURN === $submitButtonName) {
                 $url = $context->getReferrer()
-                    ?? $this->get(CrudUrlGenerator::class)->build()->setAction(Action::INDEX)->generateUrl();
+                    ?? $this->get(AdminUrlGenerator::class)->setAction(Action::INDEX)->generateUrl();
 
                 return $this->redirect($url);
             }
 
             if (Action::SAVE_AND_ADD_ANOTHER === $submitButtonName) {
-                $url = $this->get(CrudUrlGenerator::class)->build()->setAction(Action::NEW)->generateUrl();
+                $url = $this->get(AdminUrlGenerator::class)->setAction(Action::NEW)->generateUrl();
 
                 return $this->redirect($url);
             }
@@ -368,6 +371,9 @@ abstract class AbstractCrudController extends AbstractController implements Crud
 
         $event = new BeforeEntityDeletedEvent($entityInstance);
         $this->get('event_dispatcher')->dispatch($event);
+        if ($event->isPropagationStopped()) {
+            return $event->getResponse();
+        }
         $entityInstance = $event->getEntityInstance();
 
         try {
@@ -392,7 +398,7 @@ abstract class AbstractCrudController extends AbstractController implements Crud
             return $this->redirect($referrer);
         }
 
-        return $this->redirect($this->get(CrudUrlGenerator::class)->build()->setAction('index')->unset('entityId')->generateUrl());
+        return $this->redirect($this->get(AdminUrlGenerator::class)->setAction(Action::INDEX)->unset(EA::ENTITY_ID)->generateUrl());
     }
 
     public function autocomplete(AdminContext $context): JsonResponse
@@ -402,9 +408,9 @@ abstract class AbstractCrudController extends AbstractController implements Crud
         $autocompleteContext = $context->getRequest()->get(AssociationField::PARAM_AUTOCOMPLETE_CONTEXT);
 
         /** @var CrudControllerInterface $controller */
-        $controller = $this->get(ControllerFactory::class)->getCrudControllerInstance($autocompleteContext['crudId'], Action::INDEX, $context->getRequest());
+        $controller = $this->get(ControllerFactory::class)->getCrudControllerInstance($autocompleteContext[EA::CRUD_CONTROLLER_FQCN], Action::INDEX, $context->getRequest());
         /** @var FieldDto $field */
-        $field = FieldCollection::new($controller->configureFields($autocompleteContext['originatingPage']))->get($autocompleteContext['propertyName']);
+        $field = FieldCollection::new($controller->configureFields($autocompleteContext['originatingPage']))->getByProperty($autocompleteContext['propertyName']);
         /** @var \Closure|null $queryBuilderCallable */
         $queryBuilderCallable = $field->getCustomOption(AssociationField::OPTION_QUERY_BUILDER_CALLABLE);
 
@@ -431,8 +437,9 @@ abstract class AbstractCrudController extends AbstractController implements Crud
         /** @var FiltersFormType $filtersForm */
         $filtersForm = $this->get(FormFactory::class)->createFiltersForm($filters, $context->getRequest());
         $formActionParts = parse_url($filtersForm->getConfig()->getAction());
-        $queryString = $formActionParts['query'] ?? [];
+        $queryString = $formActionParts[EA::QUERY] ?? [];
         parse_str($queryString, $queryStringAsArray);
+        unset($queryStringAsArray[EA::FILTERS], $queryStringAsArray[EA::PAGE]);
 
         $responseParameters = KeyValueStore::new([
             'templateName' => 'crud/filters',
@@ -563,7 +570,7 @@ abstract class AbstractCrudController extends AbstractController implements Crud
             $uploadNew = $config->getOption('upload_new');
 
             foreach ($state->getUploadedFiles() as $index => $file) {
-                $fileName = u($filePaths[$index])->after($uploadDir)->toString();
+                $fileName = u($filePaths[$index])->replace($uploadDir, '')->toString();
                 $uploadNew($file, $uploadDir, $fileName);
             }
         }

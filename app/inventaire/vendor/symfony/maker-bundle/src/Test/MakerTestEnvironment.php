@@ -254,7 +254,7 @@ final class MakerTestEnvironment
 
         $matches = [];
 
-        preg_match_all('#(created|updated): (]8;;[^]*\\\)?(.*?)(]8;;\\\)?\n#iu', $output, $matches, PREG_PATTERN_ORDER);
+        preg_match_all('#(created|updated): (]8;;[^]*\\\)?(.*?)(]8;;\\\)?\n#iu', $output, $matches, \PREG_PATTERN_ORDER);
 
         return array_map('trim', $matches[3]);
     }
@@ -272,7 +272,7 @@ final class MakerTestEnvironment
 
     public function runTwigCSLint(string $file)
     {
-        return MakerTestProcess::create(sprintf('php vendor/bin/twigcs lint %s', $this->path.'/'.$file), $this->rootPath)
+        return MakerTestProcess::create(sprintf('php vendor/bin/twigcs --config ./.twig_cs.dist %s', $this->path.'/'.$file), $this->rootPath)
                                ->run(true);
     }
 
@@ -373,12 +373,18 @@ final class MakerTestEnvironment
             $this->fs->symlink($rootPath.'/vendor/symfony/phpunit-bridge', $this->flexPath.'/vendor/symfony/phpunit-bridge');
         }
 
-        // temporarily ignoring indirect deprecations - see #237
         $replacements = [
+            // temporarily ignoring indirect deprecations - see #237
             [
                 'filename' => '.env.test',
                 'find' => 'SYMFONY_DEPRECATIONS_HELPER=999999',
                 'replace' => 'SYMFONY_DEPRECATIONS_HELPER=max[self]=0',
+            ],
+            // do not explicitly set the PHPUnit version
+            [
+                'filename' => 'phpunit.xml.dist',
+                'find' => '<server name="SYMFONY_PHPUNIT_VERSION" value="8.5" />',
+                'replace' => '',
             ],
         ];
         $this->processReplacements($replacements, $this->flexPath);

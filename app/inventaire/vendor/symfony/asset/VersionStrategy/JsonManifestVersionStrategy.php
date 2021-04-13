@@ -40,12 +40,12 @@ class JsonManifestVersionStrategy implements VersionStrategyInterface
      * the version is. Instead, this returns the path to the
      * versioned file.
      */
-    public function getVersion($path)
+    public function getVersion(string $path)
     {
         return $this->applyVersion($path);
     }
 
-    public function applyVersion($path)
+    public function applyVersion(string $path)
     {
         return $this->getManifestPath($path) ?: $path;
     }
@@ -53,7 +53,7 @@ class JsonManifestVersionStrategy implements VersionStrategyInterface
     private function getManifestPath(string $path): ?string
     {
         if (null === $this->manifestData) {
-            if (!file_exists($this->manifestPath)) {
+            if (!is_file($this->manifestPath)) {
                 throw new \RuntimeException(sprintf('Asset manifest file "%s" does not exist.', $this->manifestPath));
             }
 
@@ -63,6 +63,6 @@ class JsonManifestVersionStrategy implements VersionStrategyInterface
             }
         }
 
-        return isset($this->manifestData[$path]) ? $this->manifestData[$path] : null;
+        return $this->manifestData[$path] ?? null;
     }
 }

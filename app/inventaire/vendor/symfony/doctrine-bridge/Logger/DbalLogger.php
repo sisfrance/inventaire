@@ -20,8 +20,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 class DbalLogger implements SQLLogger
 {
-    const MAX_STRING_LENGTH = 32;
-    const BINARY_DATA_VALUE = '(binary value)';
+    public const MAX_STRING_LENGTH = 32;
+    public const BINARY_DATA_VALUE = '(binary value)';
 
     protected $logger;
     protected $stopwatch;
@@ -62,11 +62,8 @@ class DbalLogger implements SQLLogger
 
     /**
      * Logs a message.
-     *
-     * @param string $message A message to log
-     * @param array  $params  The context
      */
-    protected function log($message, array $params)
+    protected function log(string $message, array $params)
     {
         $this->logger->debug($message, $params);
     }

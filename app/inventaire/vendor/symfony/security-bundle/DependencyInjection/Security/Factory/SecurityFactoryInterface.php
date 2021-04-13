@@ -24,17 +24,12 @@ interface SecurityFactoryInterface
     /**
      * Configures the container services required to use the authentication listener.
      *
-     * @param string      $id                  The unique id of the firewall
-     * @param array       $config              The options array for the listener
-     * @param string      $userProviderId      The service id of the user provider
-     * @param string|null $defaultEntryPointId
-     *
      * @return array containing three values:
      *               - the provider id
      *               - the listener id
      *               - the entry point id
      */
-    public function create(ContainerBuilder $container, $id, $config, $userProviderId, $defaultEntryPointId);
+    public function create(ContainerBuilder $container, string $id, array $config, string $userProviderId, ?string $defaultEntryPointId);
 
     /**
      * Defines the position at which the provider is called.

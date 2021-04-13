@@ -20,9 +20,14 @@ class Service
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $service;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Emplacement::class, inversedBy="services")
+     */
+    private $emplacement;
 
     /**
      * @ORM\OneToMany(targetEntity=Utilisateur::class, mappedBy="service")
@@ -44,9 +49,21 @@ class Service
         return $this->service;
     }
 
-    public function setService(string $service): self
+    public function setService(?string $service): self
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    public function getEmplacement(): ?Emplacement
+    {
+        return $this->emplacement;
+    }
+
+    public function setEmplacement(?Emplacement $emplacement): self
+    {
+        $this->emplacement = $emplacement;
 
         return $this;
     }

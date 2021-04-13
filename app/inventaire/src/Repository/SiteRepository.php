@@ -35,20 +35,7 @@ class SiteRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function findPDT($v)
-    {
-        $Site=$this->createQueryBuilder('s')
-             ->andWhere('s.id = :val')
-             ->setParameter('val',$v)
-             ->getQuery()
-             ->getResult();
-        $result=Array();
-        $emplacements=$Site[0]->getEmplacements();
-        foreach($emplacements as $emplacement => $value){
-				array_push($result,Array("emplacement"=>$value->id,"pdt"=>$value->getPosteDeTravails()));
-		}
-		return $result;
-    }         
+
     /*
     public function findOneBySomeField($value): ?Site
     {

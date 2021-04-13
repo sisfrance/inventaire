@@ -19,14 +19,13 @@ class Client
      */
     private $id;
 
-
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=30)
      */
     private $client;
 
     /**
-     * @ORM\OneToMany(targetEntity=Site::class, mappedBy="client")
+     * @ORM\OneToMany(targetEntity=Site::class, mappedBy="client", orphanRemoval=true)
      */
     private $sites;
 
@@ -35,10 +34,11 @@ class Client
         $this->sites = new ArrayCollection();
     }
 
-	public function getId(): ?int
-	{
-		return $this->id;
-	}
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getClient(): ?string
     {
         return $this->client;
@@ -80,8 +80,4 @@ class Client
 
         return $this;
     }
-    public function __toString(): ?string
-    {
-		return $this->getClient();
-	}
 }

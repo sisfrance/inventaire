@@ -5,6 +5,8 @@ namespace EasyCorp\Bundle\EasyAdminBundle\Field\Configurator;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\PersistentCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\TextAlign;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldConfiguratorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
@@ -12,7 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto;
 use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Type\CrudAutocompleteType;
-use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -21,13 +23,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class AssociationConfigurator implements FieldConfiguratorInterface
 {
     private $entityFactory;
-    private $crudUrlGenerator;
+    private $adminUrlGenerator;
     private $translator;
 
-    public function __construct(EntityFactory $entityFactory, CrudUrlGenerator $crudUrlGenerator, TranslatorInterface $translator)
+    public function __construct(EntityFactory $entityFactory, AdminUrlGenerator $adminUrlGenerator, TranslatorInterface $translator)
     {
         $this->entityFactory = $entityFactory;
-        $this->crudUrlGenerator = $crudUrlGenerator;
+        $this->adminUrlGenerator = $adminUrlGenerator;
         $this->translator = $translator;
     }
 
@@ -68,13 +70,14 @@ final class AssociationConfigurator implements FieldConfiguratorInterface
             }
 
             $field->setFormType(CrudAutocompleteType::class);
-            $autocompleteEndpointUrl = $this->crudUrlGenerator->build(['page' => 1]) // The autocomplete should always start on the first page
+            $autocompleteEndpointUrl = $this->adminUrlGenerator
+                ->set('page', 1) // The autocomplete should always start on the first page
                 ->setController($field->getCustomOption(AssociationField::OPTION_CRUD_CONTROLLER))
                 ->setAction('autocomplete')
                 ->setEntityId(null)
-                ->unset('sort') // Avoid passing the 'sort' param from the current entity to the autocompleted one
+                ->unset(EA::SORT) // Avoid passing the 'sort' param from the current entity to the autocompleted one
                 ->set(AssociationField::PARAM_AUTOCOMPLETE_CONTEXT, [
-                    'crudId' => $context->getRequest()->query->get('crudId'),
+                    EA::CRUD_CONTROLLER_FQCN => $context->getRequest()->query->get(EA::CRUD_CONTROLLER_FQCN),
                     'propertyName' => $propertyName,
                     'originatingPage' => $context->getCrud()->getCurrentPage(),
                 ])
@@ -129,7 +132,7 @@ final class AssociationConfigurator implements FieldConfiguratorInterface
         $field->setFormTypeOptionIfNotSet('class', $field->getDoctrineMetadata()->get('targetEntity'));
 
         if (null === $field->getTextAlign()) {
-            $field->setTextAlign('right');
+            $field->setTextAlign(TextAlign::RIGHT);
         }
 
         $field->setFormattedValue($this->countNumElements($field->getValue()));
@@ -159,12 +162,12 @@ final class AssociationConfigurator implements FieldConfiguratorInterface
         }
 
         // TODO: check if user has permission to see the related entity
-        return $this->crudUrlGenerator->build()
+        return $this->adminUrlGenerator
             ->setController($crudController)
             ->setAction(Action::DETAIL)
             ->setEntityId($entityDto->getPrimaryKeyValue())
-            ->unset('menuIndex')
-            ->unset('submenuIndex')
+            ->unset(EA::MENU_INDEX)
+            ->unset(EA::SUBMENU_INDEX)
             ->includeReferrer()
             ->generateUrl();
     }

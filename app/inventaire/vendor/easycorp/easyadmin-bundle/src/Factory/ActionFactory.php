@@ -5,15 +5,14 @@ namespace EasyCorp\Bundle\EasyAdminBundle\Factory;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\ActionCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\ActionConfigDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\ActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
-use EasyCorp\Bundle\EasyAdminBundle\Registry\DashboardControllerRegistry;
-use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use function Symfony\Component\String\u;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -24,20 +23,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class ActionFactory
 {
     private $adminContextProvider;
-    private $dashboardRegistry;
     private $authChecker;
     private $translator;
-    private $urlGenerator;
-    private $crudUrlGenerator;
+    private $adminUrlGenerator;
 
-    public function __construct(AdminContextProvider $adminContextProvider, DashboardControllerRegistry $dashboardRegistry, AuthorizationCheckerInterface $authChecker, TranslatorInterface $translator, UrlGeneratorInterface $urlGenerator, CrudUrlGenerator $crudUrlGenerator)
+    public function __construct(AdminContextProvider $adminContextProvider, AuthorizationCheckerInterface $authChecker, TranslatorInterface $translator, AdminUrlGenerator $adminUrlGenerator)
     {
         $this->adminContextProvider = $adminContextProvider;
-        $this->dashboardRegistry = $dashboardRegistry;
         $this->authChecker = $authChecker;
         $this->translator = $translator;
-        $this->urlGenerator = $urlGenerator;
-        $this->crudUrlGenerator = $crudUrlGenerator;
+        $this->adminUrlGenerator = $adminUrlGenerator;
     }
 
     public function processEntityActions(EntityDto $entityDto, ActionConfigDto $actionsDto): void
@@ -94,8 +89,6 @@ final class ActionFactory
     private function processAction(string $pageName, ActionDto $actionDto, ?EntityDto $entityDto = null): ActionDto
     {
         $adminContext = $this->adminContextProvider->getContext();
-        $dashboardControllerFqcn = $adminContext->getDashboardControllerFqcn();
-        $adminContextId = $this->dashboardRegistry->getContextIdByControllerFqcn($dashboardControllerFqcn);
         $translationDomain = $adminContext->getI18n()->getTranslationDomain();
         $defaultTranslationParameters = $adminContext->getI18n()->getTranslationParameters();
         $currentPage = $adminContext->getCrud()->getCurrentPage();
@@ -120,16 +113,24 @@ final class ActionFactory
         $defaultTemplatePath = $adminContext->getTemplatePath('crud/action');
         $actionDto->setTemplatePath($actionDto->getTemplatePath() ?? $defaultTemplatePath);
 
-        $actionDto->setLinkUrl($this->generateActionUrl($adminContextId, $currentPage, $adminContext->getRequest(), $actionDto, $entityDto));
+        $actionDto->setLinkUrl($this->generateActionUrl($currentPage, $adminContext->getRequest(), $actionDto, $entityDto));
 
         if (!$actionDto->isGlobalAction() && \in_array($pageName, [Crud::PAGE_EDIT, Crud::PAGE_NEW], true)) {
             $actionDto->setHtmlAttribute('form', sprintf('%s-%s-form', $pageName, $entityDto->getName()));
         }
 
+        if (Action::DELETE === $actionDto->getName()) {
+            $actionDto->setHtmlAttributes([
+                'formaction' => $this->adminUrlGenerator->setAction(Action::DELETE)->setEntityId($entityDto->getPrimaryKeyValue())->removeReferrer()->generateUrl(),
+                'data-toggle' => 'modal',
+                'data-target' => '#modal-delete',
+            ]);
+        }
+
         return $actionDto;
     }
 
-    private function generateActionUrl(string $adminContextId, string $currentAction, Request $request, ActionDto $actionDto, ?EntityDto $entityDto = null): string
+    private function generateActionUrl(string $currentAction, Request $request, ActionDto $actionDto, ?EntityDto $entityDto = null): string
     {
         if (null !== $url = $actionDto->getUrl()) {
             if (\is_callable($url)) {
@@ -145,24 +146,22 @@ final class ActionFactory
                 $routeParameters = $routeParameters($entityInstance);
             }
 
-            $routeParameters = array_merge(['eaContext' => $adminContextId], $routeParameters);
-
-            return $this->urlGenerator->generate($routeName, $routeParameters);
+            return $this->adminUrlGenerator->unsetAllExcept(EA::MENU_INDEX, EA::SUBMENU_INDEX)->setRoute($routeName, $routeParameters)->generateUrl();
         }
 
         $requestParameters = [
-            'crudId' => $request->query->get('crudId'),
-            'crudAction' => $actionDto->getCrudActionName(),
-            'referrer' => $this->generateReferrerUrl($request, $actionDto, $currentAction),
+            EA::CRUD_CONTROLLER_FQCN => $request->query->get(EA::CRUD_CONTROLLER_FQCN),
+            EA::CRUD_ACTION => $actionDto->getCrudActionName(),
+            EA::REFERRER => $this->generateReferrerUrl($request, $actionDto, $currentAction),
         ];
 
         if (\in_array($actionDto->getName(), [Action::INDEX, Action::NEW], true)) {
-            $requestParameters['entityId'] = null;
+            $requestParameters[EA::ENTITY_ID] = null;
         } elseif (null !== $entityDto) {
-            $requestParameters['entityId'] = $entityDto->getPrimaryKeyValueAsString();
+            $requestParameters[EA::ENTITY_ID] = $entityDto->getPrimaryKeyValueAsString();
         }
 
-        return $this->crudUrlGenerator->build($requestParameters)->generateUrl();
+        return $this->adminUrlGenerator->unsetAllExcept(EA::MENU_INDEX, EA::SUBMENU_INDEX, EA::FILTERS)->setAll($requestParameters)->generateUrl();
     }
 
     private function generateReferrerUrl(Request $request, ActionDto $actionDto, string $currentAction): ?string
@@ -171,22 +170,22 @@ final class ActionFactory
 
         if (Action::DETAIL === $currentAction) {
             if (Action::EDIT === $nextAction) {
-                return $this->crudUrlGenerator->build()->removeReferrer()->generateUrl();
+                return $this->adminUrlGenerator->removeReferrer()->generateUrl();
             }
         }
 
         if (Action::INDEX === $currentAction) {
-            return $this->crudUrlGenerator->build()->removeReferrer()->generateUrl();
+            return $this->adminUrlGenerator->removeReferrer()->generateUrl();
         }
 
         if (Action::NEW === $currentAction) {
             return null;
         }
 
-        $referrer = $request->get('referrer');
+        $referrer = $request->get(EA::REFERRER);
         $referrerParts = parse_url($referrer);
-        parse_str($referrerParts['query'] ?? '', $referrerQueryStringVariables);
-        $referrerCrudAction = $referrerQueryStringVariables['crudAction'] ?? null;
+        parse_str($referrerParts[EA::QUERY] ?? '', $referrerQueryStringVariables);
+        $referrerCrudAction = $referrerQueryStringVariables[EA::CRUD_ACTION] ?? null;
 
         if (Action::EDIT === $currentAction) {
             if (\in_array($referrerCrudAction, [Action::INDEX, Action::DETAIL], true)) {
@@ -194,6 +193,6 @@ final class ActionFactory
             }
         }
 
-        return $this->crudUrlGenerator->build()->removeReferrer()->generateUrl();
+        return $this->adminUrlGenerator->removeReferrer()->generateUrl();
     }
 }

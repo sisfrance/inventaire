@@ -22,8 +22,6 @@ use Symfony\Component\Security\Guard\AuthenticatorInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Guard\Token\PreAuthenticationGuardToken;
 use Symfony\Component\Security\Http\Firewall\AbstractListener;
-use Symfony\Component\Security\Http\Firewall\LegacyListenerTrait;
-use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 use Symfony\Component\Security\Http\RememberMe\RememberMeServicesInterface;
 
 /**
@@ -32,12 +30,10 @@ use Symfony\Component\Security\Http\RememberMe\RememberMeServicesInterface;
  * @author Ryan Weaver <ryan@knpuniversity.com>
  * @author Amaury Leroux de Lens <amaury@lerouxdelens.com>
  *
- * @final since Symfony 4.3
+ * @final
  */
-class GuardAuthenticationListener extends AbstractListener implements ListenerInterface
+class GuardAuthenticationListener extends AbstractListener
 {
-    use LegacyListenerTrait;
-
     private $guardHandler;
     private $authenticationManager;
     private $providerKey;
@@ -138,7 +134,7 @@ class GuardAuthenticationListener extends AbstractListener implements ListenerIn
             $credentials = $guardAuthenticator->getCredentials($request);
 
             if (null === $credentials) {
-                throw new \UnexpectedValueException(sprintf('The return value of "%1$s::getCredentials()" must not be null. Return false from "%1$s::supports()" instead.', \get_class($guardAuthenticator)));
+                throw new \UnexpectedValueException(sprintf('The return value of "%1$s::getCredentials()" must not be null. Return false from "%1$s::supports()" instead.', get_debug_type($guardAuthenticator)));
             }
 
             // create a token with the unique key, so that the provider knows which authenticator to use
@@ -222,7 +218,7 @@ class GuardAuthenticationListener extends AbstractListener implements ListenerIn
         }
 
         if (!$response instanceof Response) {
-            throw new \LogicException(sprintf('"%s::onAuthenticationSuccess()" *must* return a Response if you want to use the remember me functionality. Return a Response, or set remember_me to false under the guard configuration.', \get_class($guardAuthenticator)));
+            throw new \LogicException(sprintf('"%s::onAuthenticationSuccess()" *must* return a Response if you want to use the remember me functionality. Return a Response, or set remember_me to false under the guard configuration.', get_debug_type($guardAuthenticator)));
         }
 
         $this->rememberMeServices->loginSuccess($request, $response, $token);

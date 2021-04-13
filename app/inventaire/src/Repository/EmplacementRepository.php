@@ -22,7 +22,7 @@ class EmplacementRepository extends ServiceEntityRepository
     // /**
     //  * @return Emplacement[] Returns an array of Emplacement objects
     //  */
-    
+    /*
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('e')
@@ -34,7 +34,7 @@ class EmplacementRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    
+    */
 
     /*
     public function findOneBySomeField($value): ?Emplacement

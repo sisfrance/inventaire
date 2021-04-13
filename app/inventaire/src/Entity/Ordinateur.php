@@ -15,37 +15,39 @@ class Ordinateur
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(name="Id",type="integer")
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $reference;
 
     /**
      * @ORM\ManyToOne(targetEntity=Modele::class, inversedBy="ordinateurs")
-     * @ORM\JoinColumn(name="modele_id", referencedColumnName="Id")
      */
     private $modele;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TypeOrdinateur::class, inversedBy="ordinateurs")
-     * @ORM\JoinColumn(name="typeordinateur_id", referencedColumnName="Id")
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
-    private $type;
+    private $serial_number;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Processeur::class, inversedBy="ordinateurs")
-     * @ORM\JoinColumn(name="processeur_id", referencedColumnName="Id")
+     * @ORM\ManyToOne(targetEntity=TypeOrdinateur::class, inversedBy="ordinateurs")
+     */
+    private $type_ordinateur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Processeur::class)
      */
     private $processeur;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $ram;
+    private $memoire;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -54,26 +56,13 @@ class Ordinateur
 
     /**
      * @ORM\ManyToOne(targetEntity=Fournisseur::class, inversedBy="ordinateurs")
-     * @ORM\JoinColumn(name="id", referencedColumnName="Id")
      */
     private $fournisseur;
 
     /**
-     * @ORM\Column(type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $ipadresse;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Os::class, inversedBy="ordinateurs")
-     * @ORM\JoinColumn(name="os_id", referencedColumnName="Id")
-     */
-    private $os;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Emplacement::class, inversedBy="ordinateurs")
-     * @ORM\JoinColumn(name="emplacement_id", referencedColumnName="Id")
-     */
-    private $emplacement;
+    private $adresse_ip;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -81,42 +70,29 @@ class Ordinateur
     private $notes;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Systeme::class)
+     */
+    private $operating_system;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Peripherique::class, inversedBy="ordinateurs")
-     * 
      */
     private $peripheriques;
 
     /**
-     * @ORM\Column(type="string", length=30, nullable=true)
+     * @ORM\ManyToMany(targetEntity=Utilisateur::class, inversedBy="ordinateurs")
      */
-    private $serialnumber;
-
-    /**
-     * @ORM\OneToMany(targetEntity=PosteDeTravail::class, mappedBy="ordinateur")
-     */
-    private $posteDeTravails;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Office::class, mappedBy="ordinateur")
-     */
-    private $offices;
-
-    /**
-     * @ORM\OneToMany(targetEntity=LecteurReseau::class, mappedBy="ordinateur")
-     */
-    private $yes;
+    private $utilisateurs;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $nom_pc;
+    private $nom;
 
     public function __construct()
     {
         $this->peripheriques = new ArrayCollection();
-        $this->posteDeTravails = new ArrayCollection();
-        $this->offices = new ArrayCollection();
-        $this->yes = new ArrayCollection();
+        $this->utilisateurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,14 +124,26 @@ class Ordinateur
         return $this;
     }
 
-    public function getType(): ?TypeOrdinateur
+    public function getSerialNumber(): ?string
     {
-        return $this->type;
+        return $this->serial_number;
     }
 
-    public function setType(?TypeOrdinateur $type): self
+    public function setSerialNumber(?string $serial_number): self
     {
-        $this->type = $type;
+        $this->serial_number = $serial_number;
+
+        return $this;
+    }
+
+    public function getTypeOrdinateur(): ?TypeOrdinateur
+    {
+        return $this->type_ordinateur;
+    }
+
+    public function setTypeOrdinateur(?TypeOrdinateur $type_ordinateur): self
+    {
+        $this->type_ordinateur = $type_ordinateur;
 
         return $this;
     }
@@ -172,14 +160,14 @@ class Ordinateur
         return $this;
     }
 
-    public function getRam(): ?string
+    public function getMemoire(): ?string
     {
-        return $this->ram;
+        return $this->memoire;
     }
 
-    public function setRam(?string $ram): self
+    public function setMemoire(?string $memoire): self
     {
-        $this->ram = $ram;
+        $this->memoire = $memoire;
 
         return $this;
     }
@@ -208,38 +196,14 @@ class Ordinateur
         return $this;
     }
 
-    public function getIpadresse(): ?string
+    public function getAdresseIp(): ?string
     {
-        return $this->ipadresse;
+        return $this->adresse_ip;
     }
 
-    public function setIpadresse(?string $ipadresse): self
+    public function setAdresseIp(?string $adresse_ip): self
     {
-        $this->ipadresse = $ipadresse;
-
-        return $this;
-    }
-
-    public function getOs(): ?Os
-    {
-        return $this->os;
-    }
-
-    public function setOs(?Os $os): self
-    {
-        $this->os = $os;
-
-        return $this;
-    }
-
-    public function getEmplacement(): ?Emplacement
-    {
-        return $this->emplacement;
-    }
-
-    public function setEmplacement(?Emplacement $emplacement): self
-    {
-        $this->emplacement = $emplacement;
+        $this->adresse_ip = $adresse_ip;
 
         return $this;
     }
@@ -252,6 +216,18 @@ class Ordinateur
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getOperatingSystem(): ?Systeme
+    {
+        return $this->operating_system;
+    }
+
+    public function setOperatingSystem(?Systeme $operating_system): self
+    {
+        $this->operating_system = $operating_system;
 
         return $this;
     }
@@ -280,116 +256,38 @@ class Ordinateur
         return $this;
     }
 
-    public function getSerialnumber(): ?string
-    {
-        return $this->serialnumber;
-    }
-
-    public function setSerialnumber(?string $serialnumber): self
-    {
-        $this->serialnumber = $serialnumber;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|PosteDeTravail[]
+     * @return Collection|Utilisateur[]
      */
-    public function getPosteDeTravails(): Collection
+    public function getUtilisateurs(): Collection
     {
-        return $this->posteDeTravails;
+        return $this->utilisateurs;
     }
 
-    public function addPosteDeTravail(PosteDeTravail $posteDeTravail): self
+    public function addUtilisateur(Utilisateur $utilisateur): self
     {
-        if (!$this->posteDeTravails->contains($posteDeTravail)) {
-            $this->posteDeTravails[] = $posteDeTravail;
-            $posteDeTravail->setOrdinateur($this);
+        if (!$this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs[] = $utilisateur;
         }
 
         return $this;
     }
 
-    public function removePosteDeTravail(PosteDeTravail $posteDeTravail): self
+    public function removeUtilisateur(Utilisateur $utilisateur): self
     {
-        if ($this->posteDeTravails->removeElement($posteDeTravail)) {
-            // set the owning side to null (unless already changed)
-            if ($posteDeTravail->getOrdinateur() === $this) {
-                $posteDeTravail->setOrdinateur(null);
-            }
-        }
+        $this->utilisateurs->removeElement($utilisateur);
 
         return $this;
     }
 
-    /**
-     * @return Collection|Office[]
-     */
-    public function getOffices(): Collection
+    public function getNom(): ?string
     {
-        return $this->offices;
+        return $this->nom;
     }
 
-    public function addOffice(Office $office): self
+    public function setNom(?string $nom_pc): self
     {
-        if (!$this->offices->contains($office)) {
-            $this->offices[] = $office;
-            $office->setOrdinateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOffice(Office $office): self
-    {
-        if ($this->offices->removeElement($office)) {
-            // set the owning side to null (unless already changed)
-            if ($office->getOrdinateur() === $this) {
-                $office->setOrdinateur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|LecteurReseau[]
-     */
-    public function getYes(): Collection
-    {
-        return $this->yes;
-    }
-
-    public function addYe(LecteurReseau $ye): self
-    {
-        if (!$this->yes->contains($ye)) {
-            $this->yes[] = $ye;
-            $ye->setOrdinateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeYe(LecteurReseau $ye): self
-    {
-        if ($this->yes->removeElement($ye)) {
-            // set the owning side to null (unless already changed)
-            if ($ye->getOrdinateur() === $this) {
-                $ye->setOrdinateur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getNomPc(): ?string
-    {
-        return $this->nom_pc;
-    }
-
-    public function setNomPc(?string $nom_pc): self
-    {
-        $this->nom_pc = $nom_pc;
+        $this->nom_pc = $nom;
 
         return $this;
     }

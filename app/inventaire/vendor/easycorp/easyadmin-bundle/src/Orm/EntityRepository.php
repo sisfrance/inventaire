@@ -82,6 +82,10 @@ final class EntityRepository implements EntityRepositoryInterface
                 $associatedProperties = explode('.', $propertyName);
                 $numAssociatedProperties = \count($associatedProperties);
 
+                if (1 === $numAssociatedProperties) {
+                    throw new \InvalidArgumentException(sprintf('The "%s" property included in the setSearchFields() method is not a valid search field. When using associated properties in search, you must also define the exact field used in the search (e.g. \'%s.id\', \'%s.name\', etc.)', $propertyName, $propertyName, $propertyName));
+                }
+
                 $originalPropertyName = $associatedProperties[0];
                 $originalPropertyMetadata = $entityDto->getPropertyMetadata($originalPropertyName);
                 $associatedEntityDto = $this->entityFactory->create($originalPropertyMetadata->get('targetEntity'));
@@ -140,12 +144,16 @@ final class EntityRepository implements EntityRepositoryInterface
 
     private function addOrderClause(QueryBuilder $queryBuilder, SearchDto $searchDto, EntityDto $entityDto): void
     {
+        $aliases = $queryBuilder->getAllAliases();
         foreach ($searchDto->getSort() as $sortProperty => $sortOrder) {
             $sortFieldIsDoctrineAssociation = $entityDto->isAssociation($sortProperty);
 
             if ($sortFieldIsDoctrineAssociation) {
                 $sortFieldParts = explode('.', $sortProperty, 2);
-                $queryBuilder->leftJoin('entity.'.$sortFieldParts[0], $sortFieldParts[0]);
+                // check if join has been added once before.
+                if (!\in_array($sortFieldParts[0], $aliases)) {
+                    $queryBuilder->leftJoin('entity.'.$sortFieldParts[0], $sortFieldParts[0]);
+                }
 
                 if (1 === \count($sortFieldParts)) {
                     $queryBuilder->addOrderBy('entity.'.$sortProperty, $sortOrder);

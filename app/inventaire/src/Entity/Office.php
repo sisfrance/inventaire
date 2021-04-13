@@ -18,57 +18,57 @@ class Office
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Ordinateur::class, inversedBy="offices")
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $ordinateur;
+    private $version;
 
     /**
-     * @ORM\ManyToOne(targetEntity=VersionOffice::class, inversedBy="offices")
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
-    private $version_office;
+    private $clé;
 
     /**
-     * @ORM\Column(type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $courrier;
+    private $compte_office;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getOrdinateur(): ?Ordinateur
+    public function getVersion(): ?string
     {
-        return $this->ordinateur;
+        return $this->version;
     }
 
-    public function setOrdinateur(?Ordinateur $ordinateur): self
+    public function setVersion(?string $version): self
     {
-        $this->ordinateur = $ordinateur;
+        $this->version = $version;
 
         return $this;
     }
 
-    public function getVersionOffice(): ?VersionOffice
+    public function getClé(): ?string
     {
-        return $this->version_office;
+        return $this->clé;
     }
 
-    public function setVersionOffice(?VersionOffice $version_office): self
+    public function setClé(?string $clé): self
     {
-        $this->version_office = $version_office;
+        $this->clé = $clé;
 
         return $this;
     }
 
-    public function getCourrier(): ?string
+    public function getCompteOffice(): ?string
     {
-        return $this->courrier;
+        return $this->compte_office;
     }
 
-    public function setCourrier(?string $courrier): self
+    public function setCompteOffice(?string $compte_office): self
     {
-        $this->courrier = $courrier;
+        $this->compte_office = $compte_office;
 
         return $this;
     }

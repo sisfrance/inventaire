@@ -12,7 +12,6 @@
 namespace Symfony\Component\Security\Core\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Role\Role;
 
 /**
  * RoleVoter votes if any attribute starts with a given prefix.
@@ -37,12 +36,12 @@ class RoleVoter implements VoterInterface
         $roles = $this->extractRoles($token);
 
         foreach ($attributes as $attribute) {
-            if ($attribute instanceof Role) {
-                $attribute = $attribute->getRole();
-            }
-
             if (!\is_string($attribute) || 0 !== strpos($attribute, $this->prefix)) {
                 continue;
+            }
+
+            if ('ROLE_PREVIOUS_ADMIN' === $attribute) {
+                trigger_deprecation('symfony/security-core', '5.1', 'The ROLE_PREVIOUS_ADMIN role is deprecated and will be removed in version 6.0, use the IS_IMPERSONATOR attribute instead.');
             }
 
             $result = VoterInterface::ACCESS_DENIED;
@@ -58,12 +57,6 @@ class RoleVoter implements VoterInterface
 
     protected function extractRoles(TokenInterface $token)
     {
-        if (method_exists($token, 'getRoleNames')) {
-            return $token->getRoleNames();
-        }
-
-        @trigger_error(sprintf('Not implementing the "%s::getRoleNames()" method in "%s" is deprecated since Symfony 4.3.', TokenInterface::class, \get_class($token)), \E_USER_DEPRECATED);
-
-        return array_map(function (Role $role) { return $role->getRole(); }, $token->getRoles(false));
+        return $token->getRoleNames();
     }
 }

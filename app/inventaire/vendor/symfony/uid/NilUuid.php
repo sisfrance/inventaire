@@ -12,13 +12,13 @@
 namespace Symfony\Component\Uid;
 
 /**
- * @experimental in 5.1
+ * @experimental in 5.2
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
 class NilUuid extends Uuid
 {
-    protected const TYPE = \UUID_TYPE_NULL;
+    protected const TYPE = -1;
 
     public function __construct()
     {

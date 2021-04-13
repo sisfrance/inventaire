@@ -48,7 +48,7 @@ class LintCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Lints a template and outputs encountered errors')
+            ->setDescription('Lint a template and outputs encountered errors')
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format', 'txt')
             ->addOption('show-deprecations', null, InputOption::VALUE_NONE, 'Show deprecations as errors')
             ->addArgument('filename', InputArgument::IS_ARRAY, 'A file, a directory or "-" for reading from STDIN')
@@ -85,13 +85,6 @@ EOF
         }
 
         if (!$filenames) {
-            // @deprecated to be removed in 5.0
-            if (0 === ftell(\STDIN)) {
-                @trigger_error('Piping content from STDIN to the "lint:twig" command without passing the dash symbol "-" as argument is deprecated since Symfony 4.4.', \E_USER_DEPRECATED);
-
-                return $this->display($input, $output, $io, [$this->validate(file_get_contents('php://stdin'), uniqid('sf_', true))]);
-            }
-
             $loader = $this->twig->getLoader();
             if ($loader instanceof FilesystemLoader) {
                 $paths = [];
@@ -144,7 +137,7 @@ EOF
         return $filesInfo;
     }
 
-    protected function findFiles($filename)
+    protected function findFiles(string $filename)
     {
         if (is_file($filename)) {
             return [$filename];

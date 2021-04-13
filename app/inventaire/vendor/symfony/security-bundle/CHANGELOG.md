@@ -1,6 +1,40 @@
 CHANGELOG
 =========
 
+5.2.0
+-----
+
+ * Added `FirewallListenerFactoryInterface`, which can be implemented by security factories to add firewall listeners
+ * Added `SortFirewallListenersPass` to make the execution order of firewall listeners configurable by
+   leveraging `Symfony\Component\Security\Http\Firewall\FirewallListenerInterface`
+ * Added ability to use comma separated ip address list for `security.access_control`
+ * [BC break] Removed `EntryPointFactoryInterface`, authenticators must now implement `AuthenticationEntryPointInterface` if
+   they require autoregistration of a Security entry point.
+
+5.1.0
+-----
+
+ * Added XSD for configuration
+ * Added security configuration for priority-based access decision strategy
+ * Marked the `AnonymousFactory`, `FormLoginFactory`, `FormLoginLdapFactory`, `GuardAuthenticationFactory`, `HttpBasicFactory`, `HttpBasicLdapFactory`, `JsonLoginFactory`, `JsonLoginLdapFactory`, `RememberMeFactory`, `RemoteUserFactory` and `X509Factory` as `@internal`
+ * Renamed method `AbstractFactory#createEntryPoint()` to `AbstractFactory#createDefaultEntryPoint()`
+
+5.0.0
+-----
+
+ * The `switch_user.stateless` firewall option has been removed.
+ * Removed the ability to configure encoders using `argon2i` or `bcrypt` as algorithm, use `auto` instead
+ * The `simple_form` and `simple_preauth` authentication listeners have been removed,
+   use Guard instead.
+ * The `SimpleFormFactory` and `SimplePreAuthenticationFactory` classes have been removed,
+   use Guard instead.
+ * Removed `LogoutUrlHelper` and `SecurityHelper` templating helpers, use Twig instead
+ * Removed the `logout_on_user_change` firewall option
+ * Removed the `threads` encoder option
+ * Removed the `security.authentication.trust_resolver.anonymous_class` parameter
+ * Removed the `security.authentication.trust_resolver.rememberme_class` parameter
+ * Removed the `security.user.provider.in_memory.user` service.
+
 4.4.0
 -----
 

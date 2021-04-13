@@ -15,12 +15,12 @@ class Marque
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(name="Id",type="integer")
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $marque;
 
@@ -28,6 +28,11 @@ class Marque
      * @ORM\Column(type="string", length=12, nullable=true)
      */
     private $tel_support;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $mail_support;
 
     /**
      * @ORM\OneToMany(targetEntity=Modele::class, mappedBy="marque")
@@ -38,10 +43,7 @@ class Marque
     {
         $this->modeles = new ArrayCollection();
     }
-	public function __toString(): ?string
-	{
-		return $this->getMarque();
-	}
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,7 +54,7 @@ class Marque
         return $this->marque;
     }
 
-    public function setMarque(string $marque): self
+    public function setMarque(?string $marque): self
     {
         $this->marque = $marque;
 
@@ -64,9 +66,21 @@ class Marque
         return $this->tel_support;
     }
 
-    public function setTelSupport(string $tel_support): self
+    public function setTelSupport(?string $tel_support): self
     {
         $this->tel_support = $tel_support;
+
+        return $this;
+    }
+
+    public function getMailSupport(): ?string
+    {
+        return $this->mail_support;
+    }
+
+    public function setMailSupport(?string $mail_support): self
+    {
+        $this->mail_support = $mail_support;
 
         return $this;
     }

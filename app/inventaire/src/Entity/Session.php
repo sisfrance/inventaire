@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\SessionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,9 +18,9 @@ class Session
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=30, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $type;
+    private $type_session;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -30,39 +28,28 @@ class Session
     private $identifiant;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
     private $mdp;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Utilisateur::class, inversedBy="sessions")
+     * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="sessions")
      */
     private $utilisateur;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=LecteurReseau::class, mappedBy="session")
-     */
-    private $lecteurReseaux;
-
-    public function __construct()
-    {
-        $this->utilisateur = new ArrayCollection();
-        $this->lecteurReseaux = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getTypeSession(): ?string
     {
-        return $this->type;
+        return $this->type_session;
     }
 
-    public function setType(?string $type): self
+    public function setTypeSession(?string $type_session): self
     {
-        $this->type = $type;
+        $this->type_session = $type_session;
 
         return $this;
     }
@@ -91,53 +78,14 @@ class Session
         return $this;
     }
 
-    /**
-     * @return Collection|Utilisateur[]
-     */
-    public function getUtilisateur(): Collection
+    public function getUtilisateur(): ?Utilisateur
     {
         return $this->utilisateur;
     }
 
-    public function addUtilisateur(Utilisateur $utilisateur): self
+    public function setUtilisateur(?Utilisateur $utilisateur): self
     {
-        if (!$this->utilisateur->contains($utilisateur)) {
-            $this->utilisateur[] = $utilisateur;
-        }
-
-        return $this;
-    }
-
-    public function removeUtilisateur(Utilisateur $utilisateur): self
-    {
-        $this->utilisateur->removeElement($utilisateur);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|LecteurReseau[]
-     */
-    public function getLecteurReseaux(): Collection
-    {
-        return $this->lecteurReseaux;
-    }
-
-    public function addLecteurReseaux(LecteurReseau $lecteurReseaux): self
-    {
-        if (!$this->lecteurReseaux->contains($lecteurReseaux)) {
-            $this->lecteurReseaux[] = $lecteurReseaux;
-            $lecteurReseaux->addSession($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLecteurReseaux(LecteurReseau $lecteurReseaux): self
-    {
-        if ($this->lecteurReseaux->removeElement($lecteurReseaux)) {
-            $lecteurReseaux->removeSession($this);
-        }
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }

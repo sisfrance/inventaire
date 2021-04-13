@@ -50,7 +50,7 @@ abstract class AbstractExtension implements FormExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getType($name)
+    public function getType(string $name)
     {
         if (null === $this->types) {
             $this->initTypes();
@@ -66,7 +66,7 @@ abstract class AbstractExtension implements FormExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasType($name)
+    public function hasType(string $name)
     {
         if (null === $this->types) {
             $this->initTypes();
@@ -78,21 +78,20 @@ abstract class AbstractExtension implements FormExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getTypeExtensions($name)
+    public function getTypeExtensions(string $name)
     {
         if (null === $this->typeExtensions) {
             $this->initTypeExtensions();
         }
 
-        return isset($this->typeExtensions[$name])
-            ? $this->typeExtensions[$name]
-            : [];
+        return $this->typeExtensions[$name]
+            ?? [];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasTypeExtensions($name)
+    public function hasTypeExtensions(string $name)
     {
         if (null === $this->typeExtensions) {
             $this->initTypeExtensions();
@@ -176,19 +175,7 @@ abstract class AbstractExtension implements FormExtensionInterface
                 throw new UnexpectedTypeException($extension, 'Symfony\Component\Form\FormTypeExtensionInterface');
             }
 
-            if (method_exists($extension, 'getExtendedTypes')) {
-                $extendedTypes = [];
-
-                foreach ($extension::getExtendedTypes() as $extendedType) {
-                    $extendedTypes[] = $extendedType;
-                }
-            } else {
-                @trigger_error(sprintf('Not implementing the "%s::getExtendedTypes()" method in "%s" is deprecated since Symfony 4.2.', FormTypeExtensionInterface::class, \get_class($extension)), \E_USER_DEPRECATED);
-
-                $extendedTypes = [$extension->getExtendedType()];
-            }
-
-            foreach ($extendedTypes as $extendedType) {
+            foreach ($extension::getExtendedTypes() as $extendedType) {
                 $this->typeExtensions[$extendedType][] = $extension;
             }
         }

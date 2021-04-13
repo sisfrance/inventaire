@@ -13,6 +13,7 @@ namespace Symfony\Component\Form\Extension\Core\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
+use Symfony\Component\Form\Exception\LogicException;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeImmutableToDateTimeTransformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToArrayTransformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
@@ -28,7 +29,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TimeType extends AbstractType
 {
-    private static $widgets = [
+    private const WIDGETS = [
         'text' => 'Symfony\Component\Form\Extension\Core\Type\TextType',
         'choice' => 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
     ];
@@ -66,7 +67,7 @@ class TimeType extends AbstractType
                     if ($options['with_seconds']) {
                         // handle seconds ignored by user's browser when with_seconds enabled
                         // https://codereview.chromium.org/450533009/
-                        $e->setData(sprintf('%s:%s:%s', $matches['hours'], $matches['minutes'], isset($matches['seconds']) ? $matches['seconds'] : '00'));
+                        $e->setData(sprintf('%s:%s:%s', $matches['hours'], $matches['minutes'], $matches['seconds'] ?? '00'));
                     } else {
                         $e->setData(sprintf('%s:%s', $matches['hours'], $matches['minutes']));
                     }
@@ -100,7 +101,7 @@ class TimeType extends AbstractType
                     return static function (FormInterface $form) use ($emptyData, $option) {
                         $emptyData = $emptyData($form->getParent());
 
-                        return isset($emptyData[$option]) ? $emptyData[$option] : '';
+                        return $emptyData[$option] ?? '';
                     };
                 };
 
@@ -169,7 +170,7 @@ class TimeType extends AbstractType
                 }
             }
 
-            $builder->add('hour', self::$widgets[$options['widget']], $hourOptions);
+            $builder->add('hour', self::WIDGETS[$options['widget']], $hourOptions);
 
             if ($options['with_minutes']) {
                 if ($emptyData instanceof \Closure) {
@@ -177,7 +178,7 @@ class TimeType extends AbstractType
                 } elseif (isset($emptyData['minute'])) {
                     $minuteOptions['empty_data'] = $emptyData['minute'];
                 }
-                $builder->add('minute', self::$widgets[$options['widget']], $minuteOptions);
+                $builder->add('minute', self::WIDGETS[$options['widget']], $minuteOptions);
             }
 
             if ($options['with_seconds']) {
@@ -186,7 +187,7 @@ class TimeType extends AbstractType
                 } elseif (isset($emptyData['second'])) {
                     $secondOptions['empty_data'] = $emptyData['second'];
                 }
-                $builder->add('second', self::$widgets[$options['widget']], $secondOptions);
+                $builder->add('second', self::WIDGETS[$options['widget']], $secondOptions);
             }
 
             $builder->addViewTransformer(new DateTimeToArrayTransformer($options['model_timezone'], $options['view_timezone'], $parts, 'text' === $options['widget'], $options['reference_date']));
@@ -220,7 +221,7 @@ class TimeType extends AbstractType
             'with_seconds' => $options['with_seconds'],
         ]);
 
-        // Change the input to a HTML5 time input if
+        // Change the input to an HTML5 time input if
         //  * the widget is set to "single_text"
         //  * the html5 is set to true
         if ($options['html5'] && 'single_text' === $options['widget']) {
@@ -295,6 +296,18 @@ class TimeType extends AbstractType
             return null;
         };
 
+        $viewTimezone = static function (Options $options, $value): ?string {
+            if (null !== $value) {
+                return $value;
+            }
+
+            if (null !== $options['model_timezone'] && null === $options['reference_date']) {
+                return $options['model_timezone'];
+            }
+
+            return null;
+        };
+
         $resolver->setDefaults([
             'hours' => range(0, 23),
             'minutes' => range(0, 59),
@@ -305,7 +318,7 @@ class TimeType extends AbstractType
             'with_minutes' => true,
             'with_seconds' => false,
             'model_timezone' => $modelTimezone,
-            'view_timezone' => null,
+            'view_timezone' => $viewTimezone,
             'reference_date' => null,
             'placeholder' => $placeholderDefault,
             'html5' => true,
@@ -323,14 +336,19 @@ class TimeType extends AbstractType
             },
             'compound' => $compound,
             'choice_translation_domain' => false,
+            'invalid_message' => function (Options $options, $previousValue) {
+                return ($options['legacy_error_messages'] ?? true)
+                    ? $previousValue
+                    : 'Please enter a valid time.';
+            },
         ]);
 
-        $resolver->setDeprecated('model_timezone', function (Options $options, $modelTimezone): string {
-            if (null !== $modelTimezone && $options['view_timezone'] !== $modelTimezone && null === $options['reference_date']) {
-                return sprintf('Using different values for the "model_timezone" and "view_timezone" options without configuring a reference date is deprecated since Symfony 4.4.');
+        $resolver->setNormalizer('view_timezone', function (Options $options, $viewTimezone): ?string {
+            if (null !== $options['model_timezone'] && $viewTimezone !== $options['model_timezone'] && null === $options['reference_date']) {
+                throw new LogicException('Using different values for the "model_timezone" and "view_timezone" options without configuring a reference date is not supported.');
             }
 
-            return '';
+            return $viewTimezone;
         });
 
         $resolver->setNormalizer('placeholder', $placeholderNormalizer);

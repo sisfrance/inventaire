@@ -16,7 +16,7 @@ namespace Symfony\Component\Uid;
  *
  * Unlike UUIDv1, this implementation of UUIDv6 doesn't leak the MAC address of the host.
  *
- * @experimental in 5.1
+ * @experimental in 5.2
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -50,6 +50,9 @@ class UuidV6 extends Uuid
         }
     }
 
+    /**
+     * @return float Seconds since the Unix epoch 1970-01-01 00:00:00
+     */
     public function getTime(): float
     {
         $time = '0'.substr($this->uid, 0, 8).substr($this->uid, 9, 4).substr($this->uid, 15, 3);

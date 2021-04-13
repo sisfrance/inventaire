@@ -12,7 +12,6 @@
 namespace Symfony\Component\Security\Http\Firewall;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +34,7 @@ use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategyInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * UsernamePasswordJsonAuthenticationListener is a stateless implementation of
@@ -42,12 +42,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  *
- * @final since Symfony 4.3
+ * @final
  */
-class UsernamePasswordJsonAuthenticationListener extends AbstractListener implements ListenerInterface
+class UsernamePasswordJsonAuthenticationListener extends AbstractListener
 {
-    use LegacyListenerTrait;
-
     private $tokenStorage;
     private $authenticationManager;
     private $httpUtils;
@@ -60,6 +58,11 @@ class UsernamePasswordJsonAuthenticationListener extends AbstractListener implem
     private $propertyAccessor;
     private $sessionStrategy;
 
+    /**
+     * @var TranslatorInterface|null
+     */
+    private $translator;
+
     public function __construct(TokenStorageInterface $tokenStorage, AuthenticationManagerInterface $authenticationManager, HttpUtils $httpUtils, string $providerKey, AuthenticationSuccessHandlerInterface $successHandler = null, AuthenticationFailureHandlerInterface $failureHandler = null, array $options = [], LoggerInterface $logger = null, EventDispatcherInterface $eventDispatcher = null, PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->tokenStorage = $tokenStorage;
@@ -69,13 +72,7 @@ class UsernamePasswordJsonAuthenticationListener extends AbstractListener implem
         $this->successHandler = $successHandler;
         $this->failureHandler = $failureHandler;
         $this->logger = $logger;
-
-        if (null !== $eventDispatcher && class_exists(LegacyEventDispatcherProxy::class)) {
-            $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
-        } else {
-            $this->eventDispatcher = $eventDispatcher;
-        }
-
+        $this->eventDispatcher = $eventDispatcher;
         $this->options = array_merge(['username_path' => 'username', 'password_path' => 'password'], $options);
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
     }
@@ -186,12 +183,18 @@ class UsernamePasswordJsonAuthenticationListener extends AbstractListener implem
         }
 
         $token = $this->tokenStorage->getToken();
-        if ($token instanceof UsernamePasswordToken && $this->providerKey === $token->getProviderKey()) {
+        if ($token instanceof UsernamePasswordToken && $this->providerKey === $token->getFirewallName()) {
             $this->tokenStorage->setToken(null);
         }
 
         if (!$this->failureHandler) {
-            return new JsonResponse(['error' => $failed->getMessageKey()], 401);
+            if (null !== $this->translator) {
+                $errorMessage = $this->translator->trans($failed->getMessageKey(), $failed->getMessageData(), 'security');
+            } else {
+                $errorMessage = strtr($failed->getMessageKey(), $failed->getMessageData());
+            }
+
+            return new JsonResponse(['error' => $errorMessage], 401);
         }
 
         $response = $this->failureHandler->onAuthenticationFailure($request, $failed);
@@ -211,6 +214,11 @@ class UsernamePasswordJsonAuthenticationListener extends AbstractListener implem
     public function setSessionAuthenticationStrategy(SessionAuthenticationStrategyInterface $sessionStrategy)
     {
         $this->sessionStrategy = $sessionStrategy;
+    }
+
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
     }
 
     private function migrateSession(Request $request, TokenInterface $token)

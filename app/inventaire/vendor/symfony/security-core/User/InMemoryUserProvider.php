@@ -35,9 +35,9 @@ class InMemoryUserProvider implements UserProviderInterface
     public function __construct(array $users = [])
     {
         foreach ($users as $username => $attributes) {
-            $password = isset($attributes['password']) ? $attributes['password'] : null;
-            $enabled = isset($attributes['enabled']) ? $attributes['enabled'] : true;
-            $roles = isset($attributes['roles']) ? $attributes['roles'] : [];
+            $password = $attributes['password'] ?? null;
+            $enabled = $attributes['enabled'] ?? true;
+            $roles = $attributes['roles'] ?? [];
             $user = new User($username, $password, $roles, $enabled, true, true, true);
 
             $this->createUser($user);
@@ -61,7 +61,7 @@ class InMemoryUserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username)
     {
         $user = $this->getUser($username);
 
@@ -74,7 +74,7 @@ class InMemoryUserProvider implements UserProviderInterface
     public function refreshUser(UserInterface $user)
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_debug_type($user)));
         }
 
         $storedUser = $this->getUser($user->getUsername());
@@ -85,7 +85,7 @@ class InMemoryUserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsClass($class)
+    public function supportsClass(string $class)
     {
         return 'Symfony\Component\Security\Core\User\User' === $class;
     }
