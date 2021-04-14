@@ -20,21 +20,21 @@ class Systeme
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $os;
+    private $systeme;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getOs(): ?string
+    public function getSysteme(): ?string
     {
-        return $this->os;
+        return $this->systeme;
     }
 
-    public function setOs(?string $os): self
+    public function setSysteme(?string $systeme): self
     {
-        $this->os = $os;
+        $this->systeme = $systeme;
 
         return $this;
     }
