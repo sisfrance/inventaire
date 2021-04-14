@@ -44,11 +44,17 @@ class Emplacement
      */
     private $services;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ordinateur::class, mappedBy="emplacement")
+     */
+    private $ordinateurs;
+
     public function __construct()
     {
         $this->peripheriques = new ArrayCollection();
         $this->utilisateurs = new ArrayCollection();
         $this->services = new ArrayCollection();
+        $this->ordinateurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -164,6 +170,36 @@ class Emplacement
             // set the owning side to null (unless already changed)
             if ($service->getEmplacement() === $this) {
                 $service->setEmplacement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ordinateur[]
+     */
+    public function getOrdinateurs(): Collection
+    {
+        return $this->ordinateurs;
+    }
+
+    public function addOrdinateur(Ordinateur $ordinateur): self
+    {
+        if (!$this->ordinateurs->contains($ordinateur)) {
+            $this->ordinateurs[] = $ordinateur;
+            $ordinateur->setEmplacement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdinateur(Ordinateur $ordinateur): self
+    {
+        if ($this->ordinateurs->removeElement($ordinateur)) {
+            // set the owning side to null (unless already changed)
+            if ($ordinateur->getEmplacement() === $this) {
+                $ordinateur->setEmplacement(null);
             }
         }
 

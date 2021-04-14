@@ -89,6 +89,11 @@ class Ordinateur
      */
     private $nom;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Emplacement::class, inversedBy="ordinateurs")
+     */
+    private $emplacement;
+
     public function __construct()
     {
         $this->peripheriques = new ArrayCollection();
@@ -288,6 +293,18 @@ class Ordinateur
     public function setNom(?string $nom_pc): self
     {
         $this->nom_pc = $nom;
+
+        return $this;
+    }
+
+    public function getEmplacement(): ?Emplacement
+    {
+        return $this->emplacement;
+    }
+
+    public function setEmplacement(?Emplacement $emplacement): self
+    {
+        $this->emplacement = $emplacement;
 
         return $this;
     }
