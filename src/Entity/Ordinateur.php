@@ -72,7 +72,7 @@ class Ordinateur
     /**
      * @ORM\ManyToOne(targetEntity=Systeme::class)
      */
-    private $operating_system;
+    private $systeme;
 
     /**
      * @ORM\ManyToMany(targetEntity=Peripherique::class, inversedBy="ordinateurs")
@@ -220,14 +220,14 @@ class Ordinateur
         return $this;
     }
 
-    public function getOperatingSystem(): ?Systeme
+    public function getSysteme(): ?Systeme
     {
-        return $this->operating_system;
+        return $this->systeme;
     }
 
-    public function setOperatingSystem(?Systeme $operating_system): self
+    public function setSysteme(?Systeme $systeme): self
     {
-        $this->operating_system = $operating_system;
+        $this->systeme = $systeme;
 
         return $this;
     }
