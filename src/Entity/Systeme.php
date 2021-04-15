@@ -21,6 +21,11 @@ class Systeme
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $systeme;
+    
+    public function __toString()
+    {
+		return $this->getSysteme();
+	}
 
     public function getId(): ?int
     {

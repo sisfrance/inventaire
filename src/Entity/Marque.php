@@ -43,7 +43,12 @@ class Marque
     {
         $this->modeles = new ArrayCollection();
     }
-
+	
+	public function __toString()
+	{
+		return $this->getMarque();
+	}
+	
     public function getId(): ?int
     {
         return $this->id;

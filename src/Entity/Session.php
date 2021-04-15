@@ -37,6 +37,11 @@ class Session
      */
     private $utilisateur;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeSession::class, inversedBy="sessions")
+     */
+    private $type_compte;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Session
     public function setUtilisateur(?Utilisateur $utilisateur): self
     {
         $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    public function getTypeCompte(): ?TypeSession
+    {
+        return $this->type_compte;
+    }
+
+    public function setTypeCompte(?TypeSession $type_compte): self
+    {
+        $this->type_compte = $type_compte;
 
         return $this;
     }

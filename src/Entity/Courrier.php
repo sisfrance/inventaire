@@ -42,6 +42,11 @@ class Courrier
      */
     private $mdp;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="courriers")
+     */
+    private $utilisateur;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class Courrier
     public function setMdp(?string $mdp): self
     {
         $this->mdp = $mdp;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?Utilisateur
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?Utilisateur $utilisateur): self
+    {
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }

@@ -59,13 +59,22 @@ class Utilisateur
      */
     private $service;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Courrier::class, mappedBy="utilisateur")
+     */
+    private $courriers;
+
     public function __construct()
     {
         $this->ordinateurs = new ArrayCollection();
         $this->sessions = new ArrayCollection();
         $this->vpns = new ArrayCollection();
+        $this->courriers = new ArrayCollection();
     }
-
+	public function __toString(): ?string
+               	{
+               			return $this->getNom()." : ".$this->getPrenom();
+               	}
     public function getId(): ?int
     {
         return $this->id;
@@ -214,6 +223,36 @@ class Utilisateur
     public function setService(?Service $service): self
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Courrier[]
+     */
+    public function getCourriers(): Collection
+    {
+        return $this->courriers;
+    }
+
+    public function addCourrier(Courrier $courrier): self
+    {
+        if (!$this->courriers->contains($courrier)) {
+            $this->courriers[] = $courrier;
+            $courrier->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCourrier(Courrier $courrier): self
+    {
+        if ($this->courriers->removeElement($courrier)) {
+            // set the owning side to null (unless already changed)
+            if ($courrier->getUtilisateur() === $this) {
+                $courrier->setUtilisateur(null);
+            }
+        }
 
         return $this;
     }

@@ -54,7 +54,10 @@ class Site
     {
         $this->emplacements = new ArrayCollection();
     }
-
+	public function __toString(): string
+	{
+		return $this->getSite();
+	}
     public function getId(): ?int
     {
         return $this->id;

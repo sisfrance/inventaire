@@ -44,7 +44,12 @@ class Modele
         $this->peripheriques = new ArrayCollection();
         $this->ordinateurs = new ArrayCollection();
     }
-
+	
+	public function __toString():string
+	{
+		return $this->getModele();
+	}
+	
     public function getId(): ?int
     {
         return $this->id;

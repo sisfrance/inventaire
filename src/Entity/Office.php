@@ -31,6 +31,11 @@ class Office
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $compte_office;
+    
+    public function __toString()
+    {
+		return $this->getVersion();
+	}
 
     public function getId(): ?int
     {

@@ -56,7 +56,12 @@ class Emplacement
         $this->services = new ArrayCollection();
         $this->ordinateurs = new ArrayCollection();
     }
-
+	
+	public function __toString()
+	{
+		return $this->getEmplacement();
+	}
+	
     public function getId(): ?int
     {
         return $this->id;
