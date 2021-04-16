@@ -30,7 +30,7 @@ class OrdinateurCrudController extends AbstractCrudController
             TextField::new('adresse_ip'),
             TextEditorField::new('notes'),
             TextField::new('reference'),
-            AssociationField::new('modele');
+            AssociationField::new('modele'),
             AssociationField::new('emplacement'),
             AssociationField::new('peripheriques'),
             AssociationField::new('utilisateurs'),
