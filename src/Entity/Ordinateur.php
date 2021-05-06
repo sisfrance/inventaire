@@ -290,7 +290,7 @@ class Ordinateur
         return $this->nom;
     }
 
-    public function setNom(?string $nom_pc): self
+    public function setNom(?string $nom): self
     {
         $this->nom = $nom;
 
