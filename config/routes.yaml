@@ -1,7 +1,7 @@
-base:
-    path: /
-    controller: App\Controller\BaseController::index
-
 admin:
     path: /admin
     controller: App\Controller\Admin\DashboardController::index
+    
+base:
+    path: /
+    controller: App\Controller\BaseController::index
