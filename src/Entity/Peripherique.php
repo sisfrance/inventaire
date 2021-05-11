@@ -63,7 +63,10 @@ class Peripherique
     {
         $this->ordinateurs = new ArrayCollection();
     }
-
+	public function __toString(): ?string
+	{
+		return $this->getTypePeripherique()."-".$this->getReference();
+	}
     public function getId(): ?int
     {
         return $this->id;
