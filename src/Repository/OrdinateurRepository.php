@@ -18,7 +18,15 @@ class OrdinateurRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Ordinateur::class);
     }
-
+    /**
+     * @return Ordinateur[] Returns an array of Ordinateurs object
+     * */
+	/*public function findByClient($id)
+	{
+		$sql = "SELECT id from emplacement";
+		
+	}*/
+	
     // /**
     //  * @return Ordinateur[] Returns an array of Ordinateur objects
     //  */

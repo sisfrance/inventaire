@@ -16,7 +16,17 @@
 		<div id="wrapper" class="container-fluid">
 			{% include 'base/header.html.twig' %}
 			{% include 'base/menu.html.twig' %}
-	        {% block body %}{% endblock %}
+			<div id="content-wrapper" class="row">
+				<aside class="col-3">
+					{% include 'base/aside_client.html.twig' %}
+				</aside>
+				<section id="content" class="col-9">
+					{% include 'base/filtres.html.twig' %}
+					{% block body %}
+		        
+					{% endblock %}
+		        </section>
+	        </div>
         </div>
     </body>
 </html>
