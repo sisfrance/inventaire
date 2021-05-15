@@ -32,7 +32,7 @@ class ClientRepository extends ServiceEntityRepository
 		$emplacements=[];
 		foreach($sites as $site)
 		{
-			$emplacements=array_merge($emplacements,$site->getEmplacements()->toArray());
+			$emplacements=$site->getEmplacements()->toArray();
 			
 			foreach($emplacements as $emplacement)
 			{

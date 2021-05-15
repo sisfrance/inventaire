@@ -24,3 +24,15 @@ body {
 #wrapper{
 	background-color: white;
 }
+/********************
+ *  Pagination
+ * *****************/
+
+.page-item{
+	pointer-events:auto;
+	cursor:pointer;
+	.disabled{
+		cursor:not-allowed;
+		pointer-events:none;
+	}
+}

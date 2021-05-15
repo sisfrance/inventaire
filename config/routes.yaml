@@ -5,3 +5,10 @@ admin:
 base:
     path: /
     controller: App\Controller\BaseController::index
+
+page:
+    path: /page/{element}/{page}
+    controller: App\Controller\BaseController::page
+    requirements:
+        element: '\w+'
+        page: '\d+'
