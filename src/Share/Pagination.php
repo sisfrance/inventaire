@@ -51,7 +51,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 			case 'last':
 			case 'plus-one':
 			case 'less-one':
-			    $link="href='/page/{$his->url}/{$page}'";
+			    $link="href='/page/{$this->url}/{$page}'";
 			    $class="";
 			    $id=$item; 
 			    break; 
