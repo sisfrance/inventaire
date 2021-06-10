@@ -51,7 +51,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 			case 'last':
 			case 'plus-one':
 			case 'less-one':
-			    $link="href='/page/{this->url}/{$page}'";
+			    $link="href='/page/{$his->url}/{$page}'";
 			    $class="";
 			    $id=$item; 
 			    break; 
@@ -70,7 +70,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 	{
 		$total_values=$this->values->count();
 		$nb_pages = (int) ceil($total_values / $this->per_page);
-		$last_group = (int) floor($nb_pages / $this->per_page);
+		$last_group = (int) floor($nb_pages / $this->per_group);
 		/**
 		 * Recuperation des indices de debut et de fin pour afficher 
 		 * le contenu de la page

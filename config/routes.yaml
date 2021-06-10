@@ -5,10 +5,19 @@ admin:
 base:
     path: /
     controller: App\Controller\BaseController::index
-
+    
+filter:
+    path: /base/filter/update
+    controller: App\Controller\BaseController::filter_update
+    
 page:
     path: /page/{element}/{page}
     controller: App\Controller\BaseController::page
     requirements:
         element: '\w+'
         page: '\d+'
+
+change_client:
+    path: /base/client/change
+    controller: App\Controller\BaseController::client_change
+    

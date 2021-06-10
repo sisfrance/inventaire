@@ -24,25 +24,57 @@ class ClientRepository extends ServiceEntityRepository
     //  * @return Client[] Returns an array of Client objects
     //  */
    
-    public function getOrdinateurs($id)
+    public function getOrdinateurs($ids)
     {
-		$client=$this->find($id);
-		$sites=$client->getSites();
+		$clients=$this->findBy(array('id'=>$ids));
 		$ordinateurs=[];
-		$emplacements=[];
-		foreach($sites as $site)
+		foreach($clients as $client)
 		{
-			$emplacements=$site->getEmplacements()->toArray();
+			$sites=$client->getSites();
 			
-			foreach($emplacements as $emplacement)
+			foreach($sites as $site)
 			{
-				$ordinateurs=array_merge($ordinateurs,(array) $emplacement->getOrdinateurs()->toArray());
+				$emplacements=$site->getEmplacements()->toArray();
+				
+				foreach($emplacements as $emplacement)
+				{
+					$ordinateurs=array_merge($ordinateurs,(array) $emplacement->getOrdinateurs()->toArray());
+				}
 			}
 		}
 		return new ArrayCollection($ordinateurs);
 		
 	}
     
+    public function getSites($ids)
+    {
+			$clients=$this->findBy(array('id'=>$ids));
+			$sites=[];
+		
+			foreach($clients as $client)
+			{
+				$sites=array_merge($sites,(array) $client->getSites()->toArray());
+				
+			}
+		return new ArrayCollection($sites);
+	}
+	
+	public function getUtilisateurs($ids)
+	{
+		$clients=$this->findBy(array('id'=>$ids));
+		$utilisateurs=[];
+		foreach($clients as $client)
+		{
+				foreach($client->getSites() as $site)
+				{
+					foreach($site->getEmplacements() as $emplacement)
+					{
+							$utilisateurs=array_merge($utilisateurs,(array) $emplacement->getUtilisateurs(array('nom'=>'ASC'))->toArray());
+					}
+				}
+		}
+		return new ArrayCollection($utilisateurs);
+	}
     /*
     
     public function findByExampleField($value)
