@@ -1,6 +1,12 @@
 {% block content %}
 <div id="titre-ordinateur-form" class="row">
-	<div class="col-12 text-center">Ajouter un PC</div>
+	<h2class="col-12 text-center">
+		{% if id is_defined %}
+			Ajouter un PC
+		{% else %}
+		    Modifier un PC
+		 {% endif %}
+	</h2>
 </div>
 <div class="row">
 	{{form_start(form)}}

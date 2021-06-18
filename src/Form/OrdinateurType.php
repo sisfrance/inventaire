@@ -42,7 +42,7 @@ class OrdinateurType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Ordinateur::class,
-            'attr'=>['class'=>'form-group-inline'],
+            'attr'=>['class'=>'form-group'],
             'allow_extra_fields'=>true,
         ]);
     }
