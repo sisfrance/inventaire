@@ -13,6 +13,7 @@ import './styles/app.scss';
 import 'jquery';
 import 'bootstrap';
 import './inventory.js';
+import './manage.js';
 //import 'jquery';
 // start the Stimulus application
 //import 'bootstrap';

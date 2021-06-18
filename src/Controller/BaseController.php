@@ -9,8 +9,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManager;
+
 use App\Entity\Ordinateur;
 use App\Entity\Client;
+
+use App\Form\OrdinateurType;
 
 use App\Share\SharedFunctionsObject;
 use App\Share\Pagination;
@@ -49,6 +52,15 @@ class BaseController extends AbstractController
 		$this->session->set('objet','ordinateur');
 		$this->session->set('filter',array());
 		
+		if($this->session->get('flash'))
+		{
+			$flash = $this->session->get('flash');
+		}
+		else
+		{
+		     $flash=$this->session->set('flash','');
+	    }
+	    
         $id_client = $this->session->get('client');
         $objet     = $this->session->get('objet');
         $filter    = $this->session->get('filter');
@@ -82,6 +94,7 @@ class BaseController extends AbstractController
         
 		$pageManager= new Pagination($liste,$element,4,20,$page);
 		$pagination=$pageManager->paginate();
+		
 		return $this->render('base/liste_ordinateurs.html.twig', [
 			'elements' => $pagination['content'],
             'pagination_controls'=>$pagination['pagination'],
@@ -113,8 +126,7 @@ class BaseController extends AbstractController
             'context'  => $this->session->get('context'),
             ]);
 	}
-	
-	/**
+	/*
      * @Route("/base/filter/update", name="search")
      */
     public function filter(Request $request): Response
@@ -138,6 +150,103 @@ class BaseController extends AbstractController
 				'pagination_controls'=>$pagination['pagination'],
 				'context'  => $this->session->get('context'),
 				]);
+	}
+		
+	/**
+	 * @Route("/base/details/{element}/{id}", name="details")
+	 */
+	 public function details(Request $request, string $element, integer $id): Response
+	 {
+		 return new Response("details");
+	 }
+	 /**
+	 * FONCTIONS D'ADMINISTRATION ET DE MANAGE
+	 */
+	 /** 
+	 * @Route("/base/add/{element}", name="add")
+	 */
+	 public function add(Request $request, string $element): Response
+	 {
+		$ordinateur = new Ordinateur();
+		$form=$this->createForm(OrdinateurType::class,$ordinateur);
+		return $this->render("forms/{$element}_form.html.twig",array(
+																		'form'=>$form->createView(),
+																		'context'  => $this->session->get('context'),
+		
+								)); 
+	 }
+	 
+	 /**
+	  * @Route("/base/edit/{element}/{id}", name="edit")
+	  */
+	  public function edit(Request $request, string $element, int $id): Response
+	  {
+		$ordinateur=$this->getDoctrine()->getRepository(Ordinateur::class)->find($id);
+		$form=$this->createForm(OrdinateurType::class,$ordinateur);
+		return $this->render("forms/{$element}_form.html.twig",array(
+																	'id'=>$id,
+																	'form'=>$form->createView(),
+																	'context'=>$this->session->get('context'),
+								
+								));  
+	  }
+	  /**
+	  * @Route("/base/save", name="save")
+	  */
+	  public function save(Request $request): Response
+	  {
+		$id=$request->request->get('ordinateur')['id'];
+		$element=$request->request->get('element');
+		
+		if($id == 0)
+		{
+			$instance = new Ordinateur();
 		}
+		else
+		{
+			$instance = $this->getDoctrine()->getRepository(Ordinateur::class)->find($id);
+		}
+		
+		$form=$this->createForm(OrdinateurType::class,$instance);
+		
+		if($request->isMethod('POST'))
+		{
+			$form->handleRequest($request);
+			if($form->isSubmitted() && $form->isValid())
+			{
+				$instance=$form->getData();
+				$em=$this->getDoctrine()->getManager();
+				$em->persist($instance);
+				$em->flush();
+				
+				return $this->redirectToRoute('base',[]);
+			}
+			else
+			{
+				return $this->render("forms/{$element}_form.html.twig",array(
+																	'id'=>$id,
+																	'form'=>$form->createView(),
+																	'context'=>$this->session->get('context'),
+								
+																	));  
+			}
+		 }
 		 
+	  }
+	  
+	 /**
+	 * @Route("/base/confirm/{element}/{id}",name="confirm",requirements={"element"="\w+","id"="\d+"})
+	 */
+	 public function confirm(Request $request,string $element,int $id): Response
+	 {
+		  return $this->render('forms/confirm.html.twig',["element"=>$element,
+														"id"=>$id]);
+	 }
+	  /**
+	  * @Route("/base/del/",name="delete")
+	  */
+	  public function del(Request $request): Response
+	  {
+		 int: $id=$request->request->get('id');
+      }
 }

@@ -21,6 +21,11 @@ class Processeur
      * @ORM\Column(type="string", length=30)
      */
     private $processeur;
+    
+    public function __toString(): ?string
+    {
+		return $this->getProcesseur();
+	}
 
     public function getId(): ?int
     {

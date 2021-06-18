@@ -1,30 +1,43 @@
-{% include 'base/filtres.html.twig' %}
+{% include 'base/filtres-ordinateurs.html.twig' %}
 {{ pagination_controls | raw }}
-<table id="table-ordinateurs" class="table">
-  <thead>
-	<tr>
-		<th>Marque</th>
-		<th>Modèle</th>
-		<th>Numéro de série</th>
-		<th>Référence</th>
-		<th>Type</th>
-		<th>Editer</th>
-		<th>Détails</th>
-	</tr>
-  </thead>
-  <tbody>
-	{% for elt  in elements %}
-	<tr>
-		<td>{{elt.modele}}</td>
-		<td>{{elt.modele}}</td>
-		<td>{{elt.serialnumber}}</td>
-		<td>{{elt.reference}}</td>
-		<td>{{elt.typeordinateur}}</td>
-		<td><a href="/ordinateur/edit/{{elt.id}}">Editer</a></td>
-		<td><a href="/ordinateur/details/{{elt.id}}">Détails</a></td>
-	</tr>
-	{% endfor %}
-  
-  </tbody>
-
-</table>
+<div class="row">
+	<div class="col-2">
+		<div class="form-group">
+			<label for="button"></label>
+			<button id="add" type="button" data-objet="ordinateur" class="col-12 btn btn-primary mb-2">Ajouter un PC</button>
+		</div>
+	</div>
+	<div class="col-10"></div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<table id="table-ordinateurs" class="table">
+		  <thead>
+			<tr>
+				<th>Marque</th>
+				<th>Modèle</th>
+				<th>Numéro de série</th>
+				<th>Référence</th>
+				<th>Type</th>
+				<th>Editer</th>
+				<th>Détails</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			{% for elt  in elements %}
+			<tr>
+				<td>{{elt.modele}}</td>
+				<td>{{elt.modele}}</td>
+				<td>{{elt.serialnumber}}</td>
+				<td>{{elt.reference}}</td>
+				<td>{{elt.typeordinateur}}</td>
+				<td><a class="edit-button" data-objet="ordinateur" data-id="{{elt.id}}" href="#">Editer</a></td>
+				<td><a class="del-button" href="#" data-objet="ordinateur" data-id="{{elt.id}}">Détails</a></td>
+			</tr>
+			{% endfor %}
+		  
+		  </tbody>
+		
+		</table>
+	</div>
+</div>
