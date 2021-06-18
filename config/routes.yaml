@@ -8,7 +8,7 @@ base:
     
 filter:
     path: /base/filter/update
-    controller: App\Controller\BaseController::filter_update
+    controller: App\Controller\BaseController::filter
     
 page:
     path: /page/{element}/{page}
