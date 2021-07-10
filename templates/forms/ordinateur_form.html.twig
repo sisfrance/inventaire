@@ -2,9 +2,9 @@
 <div id="titre-ordinateur-form" class="row">
 	<h2class="col-12 text-center">
 		{% if id is defined %}
-			Ajouter un PC
+			Modifier un PC
 		{% else %}
-		    Modifier un PC
+		    Ajouter un PC
 		 {% endif %}
 	</h2>
 </div>
@@ -12,20 +12,12 @@
 	{{form_start(form)}}
 	<input id="element" type="hidden" name="element" value="ordinateur" />
 	<input id="ordinateur_id" type="hidden" name="ordinateur[id]" value="{{id|default(0)}}" />
-	{{form_row(form.nom)}}
-	{{form_row(form.reference)}}
-	{{form_row(form.modele)}}
-	{{form_row(form.serial_number)}}
-	{{form_row(form.type_ordinateur)}}
-	{{form_row(form.processeur)}}
-	{{form_row(form.memoire)}}
-	{{form_row(form.date_achat)}}
-	{{form_row(form.fournisseur)}}
-	{{form_row(form.adresse_ip)}}
-	{{form_row(form.notes)}}
-	{{form_row(form.systeme)}}
-	{{form_row(form.emplacement)}}
-	{{form_rest(form)}}
+	{% for index,child in form %}
+		<div class="form-group row">
+			{{ form_label(child) }}
+			{{ form_widget(child) }}
+		</div>
+	{% endfor %}
 	
 </div>
 {% endblock %}

@@ -20,7 +20,7 @@ class OrdinateurView
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $modele_id;
+    private $modele;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
@@ -35,12 +35,18 @@ class OrdinateurView
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $site_id;
+    private $site;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $utilisateur_id;
+    
+    private $emplacement;
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    
+    private $utilisateur;
     
     private function __construct()
     {
@@ -100,6 +106,18 @@ class OrdinateurView
         return $this;
     }
 
+    public function getEmplacementId(): ?int
+    {
+        return $this->emplacement_id;
+    }
+
+    public function setEmplacementId(?int $emplacement_id): self
+    {
+        $this->emplacement_id = $emplacement_id;
+
+        return $this;
+    }
+    
     public function getUtilisateurId(): ?int
     {
         return $this->utilisateur_id;

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Emplacement;
+use App\Entity\Site;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,7 +19,20 @@ class EmplacementRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Emplacement::class);
     }
+    
+	public function getEmplacementFromClients(array $ids): Array
+	{
+		$subquery=$this->createQueryBuilder('e');
+		$subquery->select('e.id')
+				->leftJoin('e.site','s')
+				->add('where',$subquery->expr()->in('s.client', '?1'))
+				->setParameter(1,$ids); 
 
+		$result=$subquery->getQuery()->getResult();
+		$fetch_id_function = function($elt){ return $elt['id'];};
+		
+		return array_map($fetch_id_function,$result);
+	}
     // /**
     //  * @return Emplacement[] Returns an array of Emplacement objects
     //  */

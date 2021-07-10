@@ -29,11 +29,20 @@ class Client
      */
     private $sites;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Courrier::class, mappedBy="client")
+     */
+    private $courriers;
+
     public function __construct()
     {
         $this->sites = new ArrayCollection();
+        $this->courriers = new ArrayCollection();
     }
-
+	public function __toString(): ?string
+	{
+		return $this->getClient();
+	}
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +84,36 @@ class Client
             // set the owning side to null (unless already changed)
             if ($site->getClient() === $this) {
                 $site->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Courrier[]
+     */
+    public function getCourriers(): Collection
+    {
+        return $this->courriers;
+    }
+
+    public function addCourrier(Courrier $courrier): self
+    {
+        if (!$this->courriers->contains($courrier)) {
+            $this->courriers[] = $courrier;
+            $courrier->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCourrier(Courrier $courrier): self
+    {
+        if ($this->courriers->removeElement($courrier)) {
+            // set the owning side to null (unless already changed)
+            if ($courrier->getClient() === $this) {
+                $courrier->setClient(null);
             }
         }
 

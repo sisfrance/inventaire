@@ -59,22 +59,30 @@ class Utilisateur
      */
     private $service;
 
+  
     /**
-     * @ORM\OneToMany(targetEntity=Courrier::class, mappedBy="utilisateur")
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $courriers;
+    private $telephone;
+
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $portable;
+
+    private $yes;
 
     public function __construct()
     {
         $this->ordinateurs = new ArrayCollection();
         $this->sessions = new ArrayCollection();
         $this->vpns = new ArrayCollection();
-        $this->courriers = new ArrayCollection();
     }
 	public function __toString(): ?string
-               	{
-               			return $this->getNom()." : ".$this->getPrenom();
-               	}
+	{
+			return $this->getNom()." : ".$this->getPrenom();
+	}
     public function getId(): ?int
     {
         return $this->id;
@@ -227,33 +235,31 @@ class Utilisateur
         return $this;
     }
 
-    /**
-     * @return Collection|Courrier[]
-     */
-    public function getCourriers(): Collection
+   
+    public function getTelephone(): ?string
     {
-        return $this->courriers;
+        return $this->telephone;
     }
 
-    public function addCourrier(Courrier $courrier): self
+    public function setTelephone(string $telephone): self
     {
-        if (!$this->courriers->contains($courrier)) {
-            $this->courriers[] = $courrier;
-            $courrier->setUtilisateur($this);
-        }
+        $this->telephone = $telephone;
 
         return $this;
     }
 
-    public function removeCourrier(Courrier $courrier): self
+
+    public function getPortable(): ?string
     {
-        if ($this->courriers->removeElement($courrier)) {
-            // set the owning side to null (unless already changed)
-            if ($courrier->getUtilisateur() === $this) {
-                $courrier->setUtilisateur(null);
-            }
-        }
+        return $this->portable;
+    }
+
+    public function setPortable(?string $portable): self
+    {
+        $this->portable = $portable;
 
         return $this;
     }
+
+   
 }

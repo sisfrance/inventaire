@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use App\Entity\AdresseMail;
 use App\Entity\Client;
 use App\Entity\Courrier;
 use App\Entity\Emplacement;
@@ -23,6 +24,7 @@ use App\Entity\Session;
 use App\Entity\Site;
 use App\Entity\Systeme;
 use App\Entity\Service;
+use App\Entity\TypeCourrier;
 use App\Entity\TypeOrdinateur;
 use App\Entity\TypePeripherique;
 use App\Entity\Utilisateur;
@@ -49,6 +51,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToCrud('Adresse Mail','fa fa-list',AdresseMail::class);
         yield MenuItem::linkToCrud('Client','fa fa-list',Client::class);
         yield MenuItem::linkToCrud('Comptes de Courrier','fa fa-list',Courrier::class);
         yield MenuItem::linkToCrud('Emplacement','fa fa-list',Emplacement::class);
@@ -64,6 +67,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Service','fa fa-list',Service::class);
         yield MenuItem::linkToCrud('Site','fa fa-list',Site::class);
         yield MenuItem::linkToCrud('Systeme','fa fa-list',Systeme::class);
+        yield MenuItem::linkToCrud('Type Serveurs Courrier','fa fa-list',TypeCourrier::class);
         yield MenuItem::linkToCrud('TypeOrdinateur','fa fa-list',TypeOrdinateur::class);
         yield MenuItem::linkToCrud('TypePeripherique','fa fa-list',TypePeripherique::class);
         yield MenuItem::linkToCrud('Utilisateur','fa fa-list',Utilisateur::class);

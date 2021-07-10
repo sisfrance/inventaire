@@ -1,11 +1,17 @@
 admin:
     path: /admin
-    controller: App\Controller\Admin\DashboardController::index
-    
+    controller: App\Controller\Admin\DashboardController::index  
+
 base:
     path: /
     controller: App\Controller\BaseController::index
-    
+
+liste:
+    path: /base/{element}
+    controller: App\Controller\BaseController::liste
+    requirements:
+        element: '\w+'
+
 filter:
     path: /base/filter/update
     controller: App\Controller\BaseController::filter
@@ -27,10 +33,11 @@ details:
     requirements:
          element: '\w+'
          id: '\d+'
+
 add:
     path: /base/add/{element}
     controller: App\Controller\BaseController::add
-     
+ 
 edit:
     path: /base/edit/{element}/{id}
     controller: App\Controller\BaseController::edit
@@ -43,8 +50,8 @@ confirm:
     controller: App\Controller\BaseController::confirm
     requirements:
         element: '\w+'
-        id: '\d+'
-        
+        id: '\d+'       
+
 delete:
    path: /base/del
    controller: App\Controller\BaseController::delete

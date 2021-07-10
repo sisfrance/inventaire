@@ -4,8 +4,10 @@ namespace App\Share;
 use Doctrine\ORM\EntityManager;
 use App\Entity\Client;
 use App\Entity\Ordinateur;
+use App\Entity\Utilisateur;
 use App\Entity\OrdinateurView;
 use App\Entity\Emplacement;
+use App\Entity\Site;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -29,6 +31,8 @@ class SharedFunctionsObject
 	{
 		$this->em=$em;
 	}
+	
+	
 	public function createContext($objet,$idsclients=[1],$filter):Array
 	{
 		$clients=$this->em->getRepository(Client::class)->findAll();
@@ -63,6 +67,8 @@ class SharedFunctionsObject
 		
 		return $terms;
 	}
+	
+	
 	/***
 	 * Transforme le tableau de termes de filtres en tableau de criteres 
 	 * */
@@ -71,12 +77,15 @@ class SharedFunctionsObject
 	{
 		$criterias=array();
 		$i=0;
+		
+		$query->add('where',$query->expr()->in("o.emplacement",":empl"));
 		foreach($terms as $term=>$value)
 			{
 				$query=$query->andWhere($query->expr()->in("{$value['table']}.{$value['field']}",":term{$i}"));
 				/*$query=$query->orWhere("{$value['table']}.{$value['field']} = ':term{$i}'");*/
 				$i+=1;
 			}
+		/*var_dump($query->getDQL());*/
 		return $query;
 		
 	}
@@ -84,18 +93,23 @@ class SharedFunctionsObject
 	/***
 	 * Fonction de filtrage des données
 	 */
-	 
-	public function filter($objet, $terms):ArrayCollection
+	
+	public function filter($objet,$ids_clients=[1], $terms):ArrayCollection
 	{
 		/* Creation des criteres */
 		switch ($objet)
 		{
 		    case 'ordinateur':
 		    case 'peripherique':
-		        $class=OrdinateurView::class;
+		        $class_search=OrdinateurView::class;
+		        $class_request=Ordinateur::class;
 				/* Verifie si on a des resultats sur la requete et construit le tableau de criteres */
 				
 				
+				break;
+			case 'utilisateur':
+				$class_search=Utilisateur::class;
+				$class_request=$class_search;
 				break;
 		   default:
 			    $terms=array();
@@ -108,27 +122,36 @@ class SharedFunctionsObject
 		
 		$result=array();
 		
-		$repo = $this->em->getRepository($class);
+		$repo = $this->em->getRepository($class_search);
 		$query=$repo->createQueryBuilder('o');
 
 		$query=$this->createCriterias($query,$terms);
-		$i=0;
-		foreach($terms as $term=>$value)
+		
+		if(count($terms)>0)
 		{
-			if($value['value'])
-				{
-					$query->setParameter("term{$i}",$value['value']);
-				}
-				$i+=1;
+			echo "termes superieurs à 0";
+			$i=0;
+			foreach($terms as $term=>$value)
+			{
+				if($value['value'])
+					{
+						$query->setParameter("term{$i}",$value['value']);
+					}
+					$i+=1;
+			}
 		}
+		$emplacements=$this->em->getRepository(Emplacement::class)->getEmplacementFromClients($ids_clients);
+		
+		$query->setParameter("empl",$emplacements);
+		
 		$fullQuery=$query->getQuery();
-		$elements=$fullQuery->getResult();
+		$result=$fullQuery->getResult();
 
 		$fetch_id_function = function($elt){ return $elt->getId();};
 		
-		$ids=array_map($fetch_id_function,$elements);
+		$ids=array_map($fetch_id_function,$result);
 
-	    $result=new ArrayCollection($this->em->getRepository(Ordinateur::class)->findBy(array('id'=>$ids)));
+	    $result=new ArrayCollection($this->em->getRepository($class_request)->findBy(array('id'=>$ids)));
 		return $result;
 		
 	}

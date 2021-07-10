@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
 class CourrierCrudController extends AbstractCrudController
@@ -22,12 +23,15 @@ class CourrierCrudController extends AbstractCrudController
     {
         return [
             #IdField::new('id'),
-            AssociationField::new('utilisateur'),
-            TextField::new('serveur_entrant'),
-            TextField::new('securite'),
-            TextField::new('port_sortant'),
-            TextField::new('identifiant'),
-            
+            AssociationField::new('client'),
+            AssociationField::new('type_serveur_reception'),
+            TextField::new('domaine'),
+            TextField::new('serveur_reception'),
+            TextField::new('securite_reception'),
+            TextField::new('port_reception'),
+            TextField::new('serveur_emission'),
+            TextField::new('port_emission'),
+            TextEditorField::new('notes'),
         ];
     }
     

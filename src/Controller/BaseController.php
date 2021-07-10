@@ -67,7 +67,7 @@ class BaseController extends AbstractController
         
         $this->session->set('context',$share->createContext($this,$id_client,$filter)); 
         $terms=$share->create_filter($request);
-        $liste=$share->filter($objet,$terms);
+        $liste=$share->filter($objet,$this->session->get('client'),$terms);
         
         $pageManager=new Pagination($liste,$objet,4,20,1);
         
@@ -80,7 +80,27 @@ class BaseController extends AbstractController
             'target' => 'base/liste_ordinateurs.html.twig',
         ]);
     }
-    
+    public function liste(Request $request,string $element):Response
+    {
+		$this->session->set('objet',$element);
+		$this->session->set('filter',[]);
+		
+		$share=new SharedFunctionsObject($this->getDoctrine()->getManager());
+		
+		$liste=$share->filter($element,$this->session->get('client'),[]);
+		$pageManager = new Pagination($liste,$element,4,20,1);
+		$pagination=$pageManager->paginate();
+		
+		return $this->render('base/index.html.twig',[
+								'elements'=>$pagination['content'],
+								'pagination_controls'=>$pagination['pagination'],
+								'context'  => $this->session->get('context'),
+								'target' => "base/liste_{$element}s.html.twig",
+								]
+								);
+		
+		
+	}
     public function page(Request $request,string $element,int $page):Response
     {
 		/*$liste=$this->getDoctrine()->getRepository(Client::class)->getOrdinateurs($this->session->get('client'));*/
@@ -90,7 +110,7 @@ class BaseController extends AbstractController
 
         $share=new SharedFunctionsObject($this->getDoctrine()->getManager());
         
-        $liste=$share->filter($objet,$filter);
+        $liste=$share->filter($objet,$this->session->get('client'),$filter);
         
 		$pageManager= new Pagination($liste,$element,4,20,$page);
 		$pagination=$pageManager->paginate();
@@ -132,6 +152,7 @@ class BaseController extends AbstractController
     public function filter(Request $request): Response
     {
 		$share=new SharedFunctionsObject($this->getDoctrine()->getManager());
+		
 		$terms=$share->create_filter($request);
 		
 		$ids_client = $this->session->get('client');
@@ -140,7 +161,7 @@ class BaseController extends AbstractController
 		$this->session->set('filter',$terms);
 		$this->session->set('context',$share->createContext($this,$ids_client,$terms));
 		
-		$liste_elements=$share->filter($objet,$terms);
+		$liste_elements=$share->filter($objet,$this->session->get('client'),$terms);
 		
 		$pageManager=new Pagination($liste_elements,$objet,4,20,1);	
 		$pagination=$pageManager->paginate();

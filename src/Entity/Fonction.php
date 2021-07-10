@@ -21,6 +21,11 @@ class Fonction
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $fonction;
+    
+    public function __toString(): ?string
+    {
+	    return $this->getFonction();	
+	}
 
     public function getId(): ?int
     {

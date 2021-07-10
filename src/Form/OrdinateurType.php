@@ -42,7 +42,7 @@ class OrdinateurType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Ordinateur::class,
-            'attr'=>['class'=>'form-group'],
+            'attr'=>['class'=>'form-ordinateur col-12'],
             'allow_extra_fields'=>true,
         ]);
     }
