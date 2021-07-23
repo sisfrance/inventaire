@@ -19,11 +19,11 @@ class SharedFunctionsObject
 											'value'=>NULL,
 											),
 					 'utilisateurs'=>array('table'=>'o',
-											'field'=>'utilisateur_id',
+											'field'=>'utilisateur',
 											'value'=>NULL,
 											  ),
 					'sites'=>       array('table'=>'o',
-										'field'=>'site_id',
+										'field'=>'site',
 										'value'=>NULL,
 										)
 								);
@@ -127,9 +127,8 @@ class SharedFunctionsObject
 
 		$query=$this->createCriterias($query,$terms);
 		
-		if(count($terms)>0)
+		if(isset($terms) && count($terms)>0)
 		{
-			echo "termes superieurs à 0";
 			$i=0;
 			foreach($terms as $term=>$value)
 			{

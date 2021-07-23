@@ -47,4 +47,8 @@ class OrdinateurViewRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getByType(): ?string
+	{
+		return "coucou";
+	}
 }

@@ -18,6 +18,7 @@ class OrdinateurRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Ordinateur::class);
     }
+    
     /**
      * @return Ordinateur[] Returns an array of Ordinateurs object
      * */
@@ -55,4 +56,8 @@ class OrdinateurRepository extends ServiceEntityRepository
         ;
     }
     */
+    
+	
+	
+	
 }

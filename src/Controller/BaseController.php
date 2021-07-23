@@ -9,8 +9,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManager;
-
 use App\Entity\Ordinateur;
+use App\Entity\Utilisateur;
+
 use App\Entity\Client;
 
 use App\Form\OrdinateurType;
@@ -26,20 +27,35 @@ class BaseController extends AbstractController
 		
 		
 	}
-	protected function getElements($objet)
+	/**
+	 * FONCTION GetObjet
+	 * role: Permet à partir d'un objet rentré dans l'url de définir l'entité qui sera concerné ainsi
+	 * que le modèle du formulaire à adopter
+	 * params: $objet <string>
+	 * return: <array> Entite <Entity>, FormType <FormType>
+	 */
+
+	private function getObjet($objet): Array
 	{
 		switch($objet)
-        { 
+		{
 			case 'ordinateur':
-			case 'peripherique':
-				$getter='get'.ucfirst($objet).'s';
-				$liste=$this->getDoctrine()->getRepository(Client::class)->{$getter}($id_client);
+				return array("instance"=>new Ordinateur(),
+							 "entity"  =>Ordinateur::class,
+							 "formtype"=>OrdinateurType::class
+							 );
+				break;
+			case 'utilisateur':
+			    return array("instance"=>new Utilisateur(),
+							 "entity"  =>Utilisateur::class,
+							 "formtype"=>UtilisateurType::class
+							 );
 				break;
 			default:
-				return false;
-	    }
-	    return $liste;
+			    return false;
+		}
 	}
+	
     /**
      * @Route("/base", name="base")
      */
@@ -174,22 +190,27 @@ class BaseController extends AbstractController
 	}
 		
 	/**
-	 * @Route("/base/details/{element}/{id}", name="details")
+	 * @Route("/base/details/{objet}/{id}", name="details",requirements={"objet"="\w+","id"="\d+"})
 	 */
-	 public function details(Request $request, string $element, integer $id): Response
+	 public function details(Request $request, string $objet, int $id): Response
 	 {
-		 return new Response("details");
+		 $o=$this->getObjet($objet);
+		 $instance=$this->getDoctrine()->getRepository($o['entity'])->findById($id);
+		 
+		 return $this->render("base/details_{$objet}.html.twig",["{$objet}"=>$instance[0]
+																]);
 	 }
 	 /**
 	 * FONCTIONS D'ADMINISTRATION ET DE MANAGE
 	 */
+	 
 	 /** 
 	 * @Route("/base/add/{element}", name="add")
 	 */
 	 public function add(Request $request, string $element): Response
 	 {
-		$ordinateur = new Ordinateur();
-		$form=$this->createForm(OrdinateurType::class,$ordinateur);
+		$o=$this->getObjet($element);
+		$form=$this->createForm($o["formtype"],$o["instance"]);
 		return $this->render("forms/{$element}_form.html.twig",array(
 																		'form'=>$form->createView(),
 																		'context'  => $this->session->get('context'),
@@ -202,8 +223,9 @@ class BaseController extends AbstractController
 	  */
 	  public function edit(Request $request, string $element, int $id): Response
 	  {
-		$ordinateur=$this->getDoctrine()->getRepository(Ordinateur::class)->find($id);
-		$form=$this->createForm(OrdinateurType::class,$ordinateur);
+		$o=$this->getObjet($element);
+		$instance=$this->getDoctrine()->getRepository($o["entity"])->find($id);
+		$form=$this->createForm($o["formtype"],$instance);
 		return $this->render("forms/{$element}_form.html.twig",array(
 																	'id'=>$id,
 																	'form'=>$form->createView(),

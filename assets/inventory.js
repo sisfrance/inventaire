@@ -3,9 +3,31 @@ const $ =require('jquery');
 
 
 $(document).ready(function(){
+	/*****
+	* CREE LA FENETRE DETAILS
+	* ***/
+
+	var popupObjet=function(voile,id){
+                 return    {
+                            show:function(htmldatas){
+                                $("#"+voile).addClass("obscur");
+                                $("#"+id).css({'width':'800px','minHeight':(window.innerHeight-100)+'px'});
+                                $("#"+id+"-content").html(htmldatas);
+                               
+                            },
+                            hide:function(){   
+								$("#"+voile).removeClass("obscur");
+                                $("#"+id+"-content").empty();
+                                $("#"+id).css({'width':'0','height':'0'});
+                                                                
+                            }
+                        };
+                    }
 	/**
 	 *  PARTIE FILTRES ---- PAGES
 	 * */
+	var popup=popupObjet("voile","window");
+	
 	let change_page=function(event){
 		event.preventDefault();
 		event.stopPropagation();
@@ -99,20 +121,37 @@ $(document).ready(function(){
 			let objet = $(event.target).attr("data-objet");
 			let id = $(event.target).attr("data-id");
 			let url = ["/base","edit",objet,id].join("/");
+			
 			$.get(url).done(function(response){
 				$("#target").empty().html(response);
 				
 			});
 		  
 	  }
+	  
+	  let show = function(event){
+		  event.preventDefault();
+		  event.stopPropagation();
+		  let id = $(event.target).attr("data-id");
+		  let objet =$(event.target).attr("data-objet");
+		  let url=["/base","details",objet,id].join("/");
+		 
+		  $.get(url).done(function(response){
+			  popup.show(response);	  
+		  });
+		  
+	  }
+	  
 	 $("#add").on("click",function(event){
 		add(event);
 	 });
 	 $(".edit-button").on("click",function(event){
 		edit(event);	 
 	});
-	$(".del-button").on("click",function(event){
-		
+	$(".details-button").on("click",function(event){
+		show(event);
 	  });
-  
+  $("#close-window").on('click',function(event){
+		popup.hide();
+	});
 });

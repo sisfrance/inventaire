@@ -18,7 +18,7 @@ class PeripheriqueRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Peripherique::class);
     }
-
+	
     // /**
     //  * @return Peripherique[] Returns an array of Peripherique objects
     //  */

@@ -177,9 +177,9 @@ class Ordinateur
         return $this;
     }
 
-    public function getDateAchat(): ?\DateTimeInterface
+    public function getDateAchat(): ?string /*\DateTimeInterface*/
     {
-        return $this->date_achat;
+        return $this->date_achat->format('d/m/Y');
     }
 
     public function setDateAchat(?\DateTimeInterface $date_achat): self
@@ -308,4 +308,5 @@ class Ordinateur
 
         return $this;
     }
+  
 }

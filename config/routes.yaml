@@ -28,10 +28,10 @@ change_client:
     controller: App\Controller\BaseController::client_change
 
 details:
-    path: /base/details/{element}/{id}
+    path: /base/details/{objet}/{id}
     controller: App\Controller\BaseController::details
     requirements:
-         element: '\w+'
+         objet: '\w+'
          id: '\d+'
 
 add:
