@@ -183,7 +183,8 @@ class Ordinateur
     }
 	public function getStrDateAchat(): ?string
 	{
-		return $this->getDateAchat()->format('d/m/Y');
+		list($day,$month,$year,$hour,$min,$sec) = explode("/",date('d/m/Y/h/i/s')); 
+		return implode("/",[$day,$month,$year]);
 	}
     public function setDateAchat(?\DateTimeInterface $date_achat): self
     {
