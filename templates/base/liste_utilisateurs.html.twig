@@ -1,33 +1,46 @@
-<div class="col-12">
-		<table id="table-utilisateurs" class="table">
-		  <thead>
-			<tr>
-				<th>Nom</th>
-				<th>Prénom</th>
-				<th>Site</th>
-				<th>Emplacement</th>
-				<th>Service</th>
-				<th>Fonction</th>
-				<th>Editer</th>
-				<th>Détails</th>
-			</tr>
-		  </thead>
-		  <tbody>
-			{% for elt  in elements %}
-			<tr>
-				<td>{{elt.getNom}}</td>
-				<td>{{elt.getPrenom}}</td>
-				<td>{{elt.getEmplacement.getSite}}</td>
-				<td>{{elt.getEmplacement}}</td>
-				<td>{{elt.getService}}</td>
-				<td>{{elt.getFonction}}</td>
-				<td><a class="edit-button" data-objet="utilisateur" data-id="{{elt.id}}" href="#">Editer</a></td>
-				<td><a class="details-button" href="#" data-objet="utilisateur" data-id="{{elt.id}}">Détails</a></td>
-			</tr>
-			{% endfor %}
-		  
-		  </tbody>
-		
-		</table>
+{% include 'base/filtres-utilisateurs.html.twig' %}
+{{ pagination_controls | raw }}
+<div class="row">
+	<div class="col-2">
+		<div class="form-group">
+			<label for="button"></label>
+			<button id="add" type="button" data-objet="ordinateur" class="col-12 btn btn-primary mb-2">Ajouter un PC</button>
+		</div>
+	</div>
+	<div class="col-10"></div>
+</div>
+<div class="row">
+	<div class="col-12">
+			<table id="table-utilisateurs" class="table">
+			  <thead>
+				<tr>
+					<th>Nom</th>
+					<th>Prénom</th>
+					<th>Site</th>
+					<th>Emplacement</th>
+					<th>Service</th>
+					<th>Fonction</th>
+					<th>Editer</th>
+					<th>Détails</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				{% for elt  in elements %}
+				<tr>
+					<td>{{elt.getNom}}</td>
+					<td>{{elt.getPrenom}}</td>
+					<td>{{elt.getEmplacement.getSite}}</td>
+					<td>{{elt.getEmplacement}}</td>
+					<td>{{elt.getService}}</td>
+					<td>{{elt.getFonction}}</td>
+					<td><a class="edit-button" data-objet="utilisateur" data-id="{{elt.id}}" href="#">Editer</a></td>
+					<td><a class="details-button" href="#" data-objet="utilisateur" data-id="{{elt.id}}">Détails</a></td>
+				</tr>
+				{% endfor %}
+			  
+			  </tbody>
+			
+			</table>
+		</div>
 	</div>
 </div>

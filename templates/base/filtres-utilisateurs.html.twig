@@ -2,26 +2,14 @@
 	<div id="filtre-line-1" class="row">
 		<div id="filtre-line-1-col-1" class="col-3">
 			<div class="form-group">
-				<label for="serialnumber" class="text-center">Numéro de série</label>
-				<input type="text" id="filtre-serialnumber" class="form-control" name="serialnumber" value=""/>
+				<label for="nom" class="text-center">Nom</label>
+				<input type="text" id="filtre-nom" class="form-control" name="nom" value=""/>
 			</div>
 		</div>
 		<div id="filtre-line-1-col-2" class="col-3">
 			<div class="form-group">
-				<label for="client" class="text-center">Utilisateurs</label>
-					<select id="filtre-utilisateurs" class="form-control" name="client" multiple="multiple">
-						{% for utilisateur in context.utilisateurs %}
-							<option value="{{utilisateur.id}}"
-							{% if context.filtres.utilisateurs is defined %}
-								{% if utilisateur.id in context.filtres.utilisateurs.value %}
-									selected="selected"
-								{% endif %}
-							{% endif %}
-							
-							
-							>{{utilisateur.prenom}} {{utilisateur.nom}}</option>
-						{% endfor %}
-					</select>
+				<label for="prenom" class="text-center">Prénom</label>
+				<input type="text" id="filtre-prenom" class="form-control" name="prenom" value=""/>
 			 </div>
 		</div>
 		<div id="filtre-line-1-col-3" class="col-3">
