@@ -9,10 +9,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManager;
+
 use App\Entity\Ordinateur;
 use App\Entity\Utilisateur;
-
 use App\Entity\Client;
+use App\Entity\Session;
+use App\Entity\Vpn;
 
 use App\Form\OrdinateurType;
 
@@ -51,6 +53,16 @@ class BaseController extends AbstractController
 							 "formtype"=>UtilisateurType::class
 							 );
 				break;
+			case 'vpn':
+				return array("instance"=>new Vpn(),
+							 "entity"  =>Vpn::class,
+							 );
+				break;
+			case 'session':
+			    return array("instance"=>new Session(),
+							"entity"   =>Session::class,
+							);
+				break;			
 			default:
 			    return false;
 		}
@@ -276,7 +288,35 @@ class BaseController extends AbstractController
 		 }
 		 
 	  }
-	  
+	  /**
+	  * @Route("/base/showpw", name="showpw")
+	  */
+	  public function showpw(Request $request):Response
+	  {
+		  $id=$request->request->get('id');
+		  $objet=$request->request->get('objet');
+		  $o=$this->getObjet($objet);
+		  
+		  $instance = $this->getDoctrine()->getRepository($o['entity'])->find($id);
+		  
+		  $response = new Response($instance->getMdp());
+		  $response->send();
+	  }
+	  /**
+	   * @Route("/base/hide", name="hidepw")
+	   */
+	  public function hidepw(Request $request):Response
+	  {
+		  $id=$request->request->get('id');
+		  $objet=$request->request->get('objet');
+		  $o=$this->getObjet($objet);
+		  
+		  $instance = $this->getDoctrine()->getRepository($o['entity'])->find($id);
+		  
+		  $response = new Response($instance->getHashMdp());
+		  $response->send();
+		  
+	  }
 	 /**
 	 * @Route("/base/confirm/{element}/{id}",name="confirm",requirements={"element"="\w+","id"="\d+"})
 	 */
@@ -292,4 +332,5 @@ class BaseController extends AbstractController
 	  {
 		 int: $id=$request->request->get('id');
       }
+      
 }

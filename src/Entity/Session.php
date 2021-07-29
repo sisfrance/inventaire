@@ -70,15 +70,32 @@ class Session
 
         return $this;
     }
-
+	public function getHashMdp(): ?string
+	{
+		try{
+			openssl_private_decrypt($this->mdp,$decrypted,"file://../config/keys/private.pem");
+		}catch(Exception $e)
+		{
+			$decrypted=$this->mdp;
+		}
+		return md5($decrypted,$this->mdp);
+		
+	}
     public function getMdp(): ?string
     {
-        return $this->mdp;
+        try{
+			openssl_private_decrypt($this->mdp,$decrypted,"file://../config/keys/private.pem");
+			return $decrypted;
+		}catch(Exception $e){
+			
+		return $this->mdp;	
+		}
     }
 
     public function setMdp(?string $mdp): self
     {
-        $this->mdp = $mdp;
+         openssl_public_encrypt($mdp,$crypted,"file://../config/keys/public.pem");
+         $this->mdp =$crypted;
 
         return $this;
     }

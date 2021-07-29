@@ -5,7 +5,15 @@ admin:
 base:
     path: /
     controller: App\Controller\BaseController::index
-
+    
+showpw:
+    path: /base/showpw
+    controller: App\Controller\BaseController::showpw
+    
+hidepw:
+    path: /base/hidepw
+    controller: App\Controller\BaseController::hidepw
+    
 liste:
     path: /base/{element}
     controller: App\Controller\BaseController::liste

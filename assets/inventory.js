@@ -138,7 +138,27 @@ $(document).ready(function(){
 		 
 		  $.get(url).done(function(response){
 			  popup.show(response);	  
-		  });
+			  $(".visualiser").on('click',function(event){
+					event.preventDefault();
+					event.stopPropagation();
+					let id=$(event.target).attr("data-id");
+					let objet=$(event.target).attr("data-objet");
+					let state=$(event.target).attr("data-state");
+					if(state == "hide"){
+						action = "show";
+						$(event.target).attr({"data-state":"show"});
+					}
+					else
+					{
+						action = "hide";
+						$(event.target).attr({"data-state":"hide"});
+					}
+					$.post("/base/"+action+"pw",{"id":id,"objet":objet})
+					.done(function(response){
+						$("#"+objet+"-mdp-"+id).val(response);		
+					 });
+				});
+			});
 		  
 	  }
 	  
@@ -151,7 +171,9 @@ $(document).ready(function(){
 	$(".details-button").on("click",function(event){
 		show(event);
 	  });
-  $("#close-window").on('click',function(event){
+    $("#close-window").on('click',function(event){
 		popup.hide();
 	});
+	
+	
 });
