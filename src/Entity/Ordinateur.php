@@ -99,7 +99,10 @@ class Ordinateur
         $this->peripheriques = new ArrayCollection();
         $this->utilisateurs = new ArrayCollection();
     }
-
+	public function __toString()
+	{
+		return $this->getReference();
+	}
     public function getId(): ?int
     {
         return $this->id;

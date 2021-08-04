@@ -52,7 +52,7 @@ $(document).ready(function(){
 		event.preventDefault();
 		event.stopPropagation();
 		let datas={
-					"serialnumber":$("#filtre-serial-number").val(),
+					"serialnumber":$("#filtre-serialnumber").val(),
 					"utilisateurs[]": $("#filtre-utilisateurs").val(),
 					"sites[]":$("#filtre-sites").val()
 				};

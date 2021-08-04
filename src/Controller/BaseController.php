@@ -17,6 +17,7 @@ use App\Entity\Session;
 use App\Entity\Vpn;
 
 use App\Form\OrdinateurType;
+use App\Form\UtilisateurType;
 
 use App\Share\SharedFunctionsObject;
 use App\Share\Pagination;

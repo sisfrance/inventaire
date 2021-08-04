@@ -1,17 +1,17 @@
 {% block content %}
-<div id="titre-ordinateur-form" class="row">
+<div id="titre-utilisateur-form" class="row">
 	<h2class="col-12 text-center">
 		{% if id is defined %}
-			Modifier un PC
+			Modifier un Utilisateur
 		{% else %}
-		    Ajouter un PC
+		    Ajouter un Utilisateur
 		 {% endif %}
 	</h2>
 </div>
 <div class="row">
 	{{form_start(form)}}
-	<input id="element" type="hidden" name="element" value="ordinateur" />
-	<input id="ordinateur_id" type="hidden" name="ordinateur[id]" value="{{id|default(0)}}" />
+	<input id="element" type="hidden" name="element" value="utilisateur" />
+	<input id="utilsateur_id" type="hidden" name="utilisateur[id]" value="{{id|default(0)}}" />
 	{% for index,child in form %}
 		<div class="form-group row">
 			{{ form_label(child) }}
