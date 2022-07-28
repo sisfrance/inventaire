@@ -1,0 +1,26 @@
+{% block content %}
+<div id="titre-ordinateur-form" class="row">
+	<h2class="col-12 text-center">
+		{% if id is defined %}
+			Modifier un PC
+		{% else %}
+		    Ajouter un PC
+		 {% endif %}
+	</h2>
+</div>
+<div class="row">
+	{{form_start(form)}}
+	<input id="element" type="hidden" name="element" value="ordinateur" />
+	<input id="ordinateur_id" type="hidden" name="ordinateur[id]" value="{{id|default(0)}}" />
+	{% for index,child in form %}
+		<div class="form-group row">
+			{{ form_label(child) }}
+			{{ form_widget(child) }}
+			{% if index in  ['modele','systeme','fournisseur','peripheriques','utilisateurs','emplacement','processeur','type_ordinateur'] %}
+				<span data-objet="{{index}}" class="bouton-add"></span><span>Ajouter {{ index }}</span>
+			{% endif %}
+		</div>
+	{% endfor %}
+	
+</div>
+{% endblock %}

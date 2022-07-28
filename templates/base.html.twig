@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+       
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+		<div id="wrapper" class="container-fluid">
+			{% include 'base/header.html.twig' %}
+			{% include 'base/menu.html.twig' %}
+			<div id="content-wrapper" class="row">
+				<aside class="col-2">
+					{% include 'base/aside_client.html.twig' %}
+				</aside>
+				<section id="content" class="col-10">
+					<h1 id="titre-client">Client GIHP</h1>
+					{% block body %}
+		        
+					{% endblock %}
+		        </section>
+	        </div>
+        </div>
+         <div id="voile" class="voile"></div>
+		{% include 'base/full.html.twig' %}
+    </body>
+</html>

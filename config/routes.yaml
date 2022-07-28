@@ -1,0 +1,73 @@
+admin:
+    path: /admin
+    controller: App\Controller\Admin\DashboardController::index  
+
+base:
+    path: /
+    controller: App\Controller\BaseController::index
+    
+showpw:
+    path: /base/showpw
+    controller: App\Controller\BaseController::showpw
+    
+hidepw:
+    path: /base/hidepw
+    controller: App\Controller\BaseController::hidepw
+
+add_item:
+    path: /base/add_item
+    controller: App\Controller\BaseController::add_item
+ 
+liste:
+    path: /base/{element}
+    controller: App\Controller\BaseController::liste
+    requirements:
+        element: '\w+'
+
+filter:
+    path: /base/filter/update
+    controller: App\Controller\BaseController::filter
+    
+page:
+    path: /page/{element}/{page}
+    controller: App\Controller\BaseController::page
+    requirements:
+        element: '\w+'
+        page: '\d+'
+
+change_client:
+    path: /base/client/change
+    controller: App\Controller\BaseController::client_change
+
+details:
+    path: /base/details/{objet}/{id}
+    controller: App\Controller\BaseController::details
+    requirements:
+         objet: '\w+'
+         id: '\d+'
+
+add:
+    path: /base/add/{element}
+    controller: App\Controller\BaseController::add
+ 
+edit:
+    path: /base/edit/{element}/{id}
+    controller: App\Controller\BaseController::edit
+    requirements:
+        element: '\w+'
+        id: '\d+'
+
+confirm:
+    path: /base/confirm/{element}/{id}
+    controller: App\Controller\BaseController::confirm
+    requirements:
+        element: '\w+'
+        id: '\d+'       
+
+delete:
+   path: /base/del
+   controller: App\Controller\BaseController::delete
+   
+   
+
+    

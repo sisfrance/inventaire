@@ -1,0 +1,72 @@
+<div class="col-12">
+	<div class="row">
+		<h3 class="text-center col-12">Détails de l'ordinateur</h3>
+	</div>
+	<div class="row">
+		<div class="col-6">
+			<p><span class="form-label">Nom PC :</span><span class="form-value">{{ordinateur.getNom}}</span></p>
+			<p><span class="form-label">Référence :</span><span class="form-value">{{ordinateur.getReference}}</span></p>
+			<p><span class="form-label">Type :</span><span class="form-value">{{ordinateur.getTypeOrdinateur}}</span></p>
+			<p><span class="form-label">Numéro de série :</span><span class="form-value">{{ordinateur.getSerialNumber}}</span></p>
+		</div>
+		<div class="col-6">
+			
+			<p><span class="form-label">Marque :</span><span class="form-value">{{ordinateur.getModele.getMarque}}</span></p>
+			<p><span class="form-label">Modèle :</span><span class="form-value">{{ordinateur.getModele}}</span></p>
+			<p><span class="form-label">Processeur :</span><span class="form-value">{{ordinateur.getProcesseur}}</span></p>
+			<p><span class="form-label">Mémoire :</span><span class="form-value">{{ordinateur.getMemoire}}</span></p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<h3 class="text-center">Périphériques reliés</h3>
+			<h5 class="">&Eacute;crans</h5>
+			<table class="table">
+				<thead>
+					<th>Marque</th>
+					<th>Modèle</th>
+					<th>Référence</th>
+				</thead>
+				
+				<tbody>
+					{% for per in ordinateur.getPeripheriques |filter(per => per.getTypePeripherique.getId == 3) %}
+					<tr>
+						<td>{{per.getModele.getMarque}}</td>
+						<td>{{per.getModele}}</td>
+						<td>{{per.getReference}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+				
+			</table>
+			<h5 class="">Stations d'accueil</h5>
+			<table class="table">
+				<thead>
+						<th>Marque</th>
+						<th>Modèle</th>
+						<th>Référence</th>
+					</thead>
+					{% for per in ordinateur.getPeripheriques |filter(per => per.getTypePeripherique.getId == 4) %} 
+					<tbody>
+						<td>{{per.getModele.getMarque}}</td>
+						<td>{{per.getModele}}</td>
+						<td>{{per.getReference}}</td>
+					</tbody>
+					{% endfor %}
+			</table>
+			<h5 class="">Imprimantes</h5>
+			<table class="table">
+				
+				
+			</table>
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<h3 class="text-center">Sessions</h3>
+		
+		</div>
+	</div>
+	
+</div>

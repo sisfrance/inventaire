@@ -1,0 +1,51 @@
+<div id="filtres">
+	<div id="filtre-line-1" class="row">
+		<div id="filtre-line-1-col-1" class="col-3">
+			<div class="form-group">
+				<label for="serialnumber" class="text-center">Numéro de série</label>
+				<input type="text" id="filtre-serialnumber" class="form-control" name="serialnumber" value=""/>
+			</div>
+		</div>
+		<div id="filtre-line-1-col-2" class="col-3">
+			<div class="form-group">
+				<label for="client" class="text-center">Utilisateurs</label>
+					<select id="filtre-utilisateurs" class="form-control" name="client" multiple="multiple">
+						{% for utilisateur in context.utilisateurs %}
+							<option value="{{utilisateur.id}}"
+							{% if context.filtres.utilisateurs is defined %}
+								{% if utilisateur.id in context.filtres.utilisateurs.value %}
+									selected="selected"
+								{% endif %}
+							{% endif %}
+							
+							
+							>{{utilisateur.prenom}} {{utilisateur.nom}}</option>
+						{% endfor %}
+					</select>
+			 </div>
+		</div>
+		<div id="filtre-line-1-col-3" class="col-3">
+			<div class="form-group">
+				<label for="site" class="text-center">Sites</label>	
+					<select id="filtre-sites" class="form-control" name="site" multiple="multiple">
+						{% for site in context.sites %}
+							<option value="{{site.id}}" 
+							{% if context.filtres.sites is defined %}
+								{% if site.id in context.filtres.sites.value %}
+									selected="selected"
+								{% endif %}
+							{% endif %}
+							>{{site.site}}</option>
+						{% endfor %}
+						
+					</select>
+			 </div>
+		</div>
+		<div id="filtre-line-1-col-4" class="col-3">
+			<div class="form-group">
+					<label for="button"></label>
+					<button id="filtres-button" type="button" class="col-12 btn btn-primary mb-2">Filtrer</button>
+			 </div>
+		</div>
+	</div><!-- end of line 1 -->
+</div><!-- end of filtres -->

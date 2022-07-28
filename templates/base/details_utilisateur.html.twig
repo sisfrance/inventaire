@@ -1,0 +1,92 @@
+<div class="col-12">
+	<div class="row">
+		<h3 class="text-center col-12">Détails de l'utilisateur</h3>
+	</div>
+	<div class="row">
+		<div class="col-6">
+			<p><span class="form-label">Nom :</span><span class="form-value">{{utilisateur.getNom}}</span></p>
+			<p><span class="form-label">Prénom :</span><span class="form-value">{{utilisateur.getPrenom}}</span></p>
+			<p><span class="form-label">Téléphone :</span><span class="form-value">{{utilisateur.getTelephone}}</span></p>
+			<p><span class="form-label">Portable :</span><span class="form-value">{{utilisateur.getPortable}}</span></p>
+			<p><span class="form-label">Em@il :</span><span class="form-value"></span></p>
+		</div>
+		<div class="col-6">
+			
+			<p><span class="form-label">Site :</span><span class="form-value">{{utilisateur.getEmplacement.getSite}}</span></p>
+			<p><span class="form-label">Emplacement :</span><span class="form-value">{{utilisateur.getEmplacement}}</span></p>
+			<p><span class="form-label">Fonction :</span><span class="form-value">{{utilisateur.getFonction}}</span></p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<h3 class="text-center">Informations</h3>
+			
+			<h5 class="">Ordinateurs</h5>
+			<table class="table">
+				<thead>
+						<th>Marque</th>
+						<th>Modèle</th>
+						<th>Référence</th>
+						<th>Numéro de série</th>
+						<th>Date d'achat</th>
+						<th>Fournisseur</th>
+					</thead>
+					{% for ordinateur in utilisateur.getOrdinateurs %} 
+					<tbody>
+						<td>{{ordinateur.getModele.getMarque}}</td>
+						<td>{{ordinateur.getModele}}</td>
+						<td>{{ordinateur.getReference}}</td>
+						<td>{{ordinateur.getSerialNumber}}</td>
+						<td>{{ordinateur.getStrDateAchat}}</td>
+						<td>{{ordinateur.getFournisseur}}</td>
+					</tbody>
+					{% endfor %}
+			</table>
+			<h5 class="">VPN</h5>
+			<table class="table">
+				<thead>
+					<th>Identifiant</th>
+					<th>Mot de passe</th>
+					<th>Visualiser mot de passe</th>
+				</thead>
+				
+				<tbody>
+					{% for vpn in utilisateur.getVpns %}
+					<tr>
+						<td>{{vpn.getIdentifiant}}</td>
+						<td><input id="vpn-mdp-{{vpn.getId}}" type="text" disabled="disabled" value="{{vpn.getMdp}}"/></td>
+						<td><input id="visualiser-vpn-{{vpn.getId}}" class="visualiser" type="button" data-id="{{vpn.getId}}" data-objet="vpn" data-state="hide" value="Visualiser mot de passe"/></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+				
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<h3 class="text-center">Sessions</h3>
+			<table class="table">
+				<thead>
+					<th>Type de session</th>
+					<th>Identifiant</th>
+					<th>Mot de passe</th>
+					<th>Visualiser mot de passe</th>
+				</thead>
+				
+				<tbody>
+					{% for session in utilisateur.getSessions %}
+					<tr>
+						<td>{{session.getTypeSession}}</td>
+						<td>{{session.getIdentifiant}}</td>
+						<td><input id="session-mdp-{{session.getId}}" type="text" disabled="disabled" value="{{session.getHashMdp}}"/></td>
+						<td><button id="visualiser-session-{{session.getId}}" class="visualiser" type="button" data-id="{{session.getId}}" data-objet="session" data-state="hide">Visualiser mot de passe</button></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+				
+			</table>
+		</div>
+	</div>
+	
+</div>

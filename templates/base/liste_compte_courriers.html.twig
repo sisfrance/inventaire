@@ -1,0 +1,33 @@
+<div class="col-12">
+		<table id="table-utilisateurs" class="table">
+		  <thead>
+			<tr>
+				<th>Nom</th>
+				<th>Prénom</th>
+				<th>Site</th>
+				<th>Emplacement</th>
+				<th>Service</th>
+				<th>Fonction</th>
+				<th>Editer</th>
+				<th>Détails</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			{% for elt  in elements %}
+			<tr>
+				<td>{{elt.getNom}}</td>
+				<td>{{elt.getPrenom}}</td>
+				<td>{{elt.getEmplacement.getSite}}</td>
+				<td>{{elt.getEmplacement}}</td>
+				<td>{{elt.getService}}</td>
+				<td>{{elt.getFonction}}</td>
+				<td><a class="edit-button" data-objet="utilisateur" data-id="{{elt.id}}" href="#">Editer</a></td>
+				<td><a class="del-button" href="#" data-objet="utilisateur" data-id="{{elt.id}}">Détails</a></td>
+			</tr>
+			{% endfor %}
+		  
+		  </tbody>
+		
+		</table>
+	</div>
+</div>

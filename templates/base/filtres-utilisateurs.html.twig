@@ -1,0 +1,39 @@
+<div id="filtres">
+	<div id="filtre-line-1" class="row">
+		<div id="filtre-line-1-col-1" class="col-3">
+			<div class="form-group">
+				<label for="nom" class="text-center">Nom</label>
+				<input type="text" id="filtre-nom" class="form-control" name="nom" value=""/>
+			</div>
+		</div>
+		<div id="filtre-line-1-col-2" class="col-3">
+			<div class="form-group">
+				<label for="prenom" class="text-center">Prénom</label>
+				<input type="text" id="filtre-prenom" class="form-control" name="prenom" value=""/>
+			 </div>
+		</div>
+		<div id="filtre-line-1-col-3" class="col-3">
+			<div class="form-group">
+				<label for="site" class="text-center">Sites</label>	
+					<select id="filtre-sites" class="form-control" name="site" multiple="multiple">
+						{% for site in context.sites %}
+							<option value="{{site.id}}" 
+							{% if context.filtres.sites is defined %}
+								{% if site.id in context.filtres.sites.value %}
+									selected="selected"
+								{% endif %}
+							{% endif %}
+							>{{site.site}}</option>
+						{% endfor %}
+						
+					</select>
+			 </div>
+		</div>
+		<div id="filtre-line-1-col-4" class="col-3">
+			<div class="form-group">
+					<label for="button"></label>
+					<button id="filtres-button" type="button" class="col-12 btn btn-primary mb-2">Filtrer</button>
+			 </div>
+		</div>
+	</div><!-- end of line 1 -->
+</div><!-- end of filtres -->
