@@ -13,7 +13,11 @@ showpw:
 hidepw:
     path: /base/hidepw
     controller: App\Controller\BaseController::hidepw
-    
+
+add_item:
+    path: /base/add_item
+    controller: App\Controller\BaseController::add_item
+ 
 liste:
     path: /base/{element}
     controller: App\Controller\BaseController::liste

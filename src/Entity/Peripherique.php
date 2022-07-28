@@ -59,14 +59,20 @@ class Peripherique
      */
     private $ordinateurs;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Utilisateur::class, mappedBy="peripherique")
+     */
+    private $utilisateurs;
+
     public function __construct()
     {
         $this->ordinateurs = new ArrayCollection();
+        $this->utilisateurs = new ArrayCollection();
     }
 	public function __toString(): ?string
-	{
-		return $this->getTypePeripherique()."-".$this->getReference();
-	}
+               	{
+               		return $this->getTypePeripherique()."-".$this->getReference();
+               	}
     public function getId(): ?int
     {
         return $this->id;
@@ -178,6 +184,36 @@ class Peripherique
     {
         if ($this->ordinateurs->removeElement($ordinateur)) {
             $ordinateur->removePeripherique($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Utilisateur[]
+     */
+    public function getUtilisateurs(): Collection
+    {
+        return $this->utilisateurs;
+    }
+
+    public function addUtilisateur(Utilisateur $utilisateur): self
+    {
+        if (!$this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs[] = $utilisateur;
+            $utilisateur->setPeripherique($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUtilisateur(Utilisateur $utilisateur): self
+    {
+        if ($this->utilisateurs->removeElement($utilisateur)) {
+            // set the owning side to null (unless already changed)
+            if ($utilisateur->getPeripherique() === $this) {
+                $utilisateur->setPeripherique(null);
+            }
         }
 
         return $this;

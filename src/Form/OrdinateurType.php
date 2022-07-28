@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -19,7 +20,7 @@ class OrdinateurType extends AbstractType
     {
         $builder
 			->setAction("/base/save")
-            ->add('reference')
+            ->add('reference',TextType::class)
             ->add('serial_number')
             ->add('memoire')
             ->add('date_achat')
@@ -46,4 +47,8 @@ class OrdinateurType extends AbstractType
             'allow_extra_fields'=>true,
         ]);
     }
+    public function getBlockPrefix()
+    {
+			return 'ordinateur';
+	}
 }

@@ -73,6 +73,11 @@ class Utilisateur
 
     private $yes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Peripherique::class, inversedBy="utilisateurs")
+     */
+    private $peripherique;
+
     public function __construct()
     {
         $this->ordinateurs = new ArrayCollection();
@@ -80,9 +85,9 @@ class Utilisateur
         $this->vpns = new ArrayCollection();
     }
 	public function __toString(): ?string
-	{
-			return $this->getNom()." : ".$this->getPrenom();
-	}
+         	{
+         			return $this->getNom()." : ".$this->getPrenom();
+         	}
     public function getId(): ?int
     {
         return $this->id;
@@ -257,6 +262,18 @@ class Utilisateur
     public function setPortable(?string $portable): self
     {
         $this->portable = $portable;
+
+        return $this;
+    }
+
+    public function getPeripherique(): ?Peripherique
+    {
+        return $this->peripherique;
+    }
+
+    public function setPeripherique(?Peripherique $peripherique): self
+    {
+        $this->peripherique = $peripherique;
 
         return $this;
     }

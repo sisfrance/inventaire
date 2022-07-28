@@ -18,8 +18,8 @@ detect_indent_width=false
 indent_mode=2
 
 [project]
-name=Inventory
-base_path=/home/tomsolete/docker/inventory/app/inventaire
+name=inventaire
+base_path=C:\\Users\\t.melin\\Docker\\inventory\\inventaire
 description=
 
 [long line marker]
@@ -27,31 +27,40 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=21
-FILE_NAME_0=1336;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FRepository%2FSiteRepository.php;0;4
-FILE_NAME_1=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FRepository%2FClientRepository.php;0;4
-FILE_NAME_2=1677;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FSite.php;0;4
-FILE_NAME_3=1216;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FUtilisateur.php;0;4
-FILE_NAME_4=1390;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FEmplacement.php;0;4
-FILE_NAME_5=267;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FFonction.php;0;4
-FILE_NAME_6=730;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FFournisseur.php;0;4
-FILE_NAME_7=57;YAML;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fconfig%2Fpackages%2Ftwig.yaml;0;4
-FILE_NAME_8=5636;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FOrdinateur.php;0;4
-FILE_NAME_9=385;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FSession.php;0;4
-FILE_NAME_10=1315;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FClient.php;0;4
-FILE_NAME_11=1150;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FVpn.php;0;4
-FILE_NAME_12=843;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FPeripherique.php;0;4
-FILE_NAME_13=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FProcesseur.php;0;4
-FILE_NAME_14=761;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FTypePeripherique.php;0;4
-FILE_NAME_15=417;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FTypeOrdinateur.php;0;4
-FILE_NAME_16=604;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FEntity%2FOffice.php;0;4
-FILE_NAME_17=2761;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fsrc%2FController%2FAdmin%2FDashboardController.php;0;4
-FILE_NAME_18=164;YAML;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fconfig%2Froutes.yaml;0;4
-FILE_NAME_19=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fconfig%2Fbundles.php;0;4
-FILE_NAME_20=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fconfig%2Fpreload.php;0;4
-FILE_NAME_21=334;YAML;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fconfig%2Fservices.yaml;0;4
-FILE_NAME_22=0;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fassets%2Fcontrollers%2Fhello_controller.js;0;4
-FILE_NAME_23=0;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Ftomsolete%2Fdocker%2Finventory%2Fapp%2Finventaire%2Fassets%2Fapp.js;0;4
+current_page=32
+FILE_NAME_0=8186;PHP;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Csrc%5CController%5CBaseController.php;0;4
+FILE_NAME_1=229;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cforms%5Cordinateur_form.html.twig;0;4
+FILE_NAME_2=0;PHP;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Csrc%5CRepository%5COrdinateurRepository.php;0;4
+FILE_NAME_3=831;PHP;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Csrc%5CForm%5COrdinateurType.php;0;4
+FILE_NAME_4=245;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cforms%5Cmytheme.html.twig;0;4
+FILE_NAME_5=0;PHP;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Csrc%5CEntity%5COrdinateur.php;0;4
+FILE_NAME_6=0;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cforms%5Csession.html.twig;0;4
+FILE_NAME_7=0;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cforms%5Ccompte_courrier.html.twig;0;4
+FILE_NAME_8=0;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cforms%5Cadresse_mail.html.twig;0;4
+FILE_NAME_9=754;HTML;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cbase.html.twig;0;4
+FILE_NAME_10=0;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cbase%5Cdetails_ordinateur.html.twig;0;4
+FILE_NAME_11=0;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cbase%5Cindex.html.twig;0;4
+FILE_NAME_12=0;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cbase%5Cheader.html.twig;0;4
+FILE_NAME_13=0;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cforms%5Cutilisateur_form.html.twig;0;4
+FILE_NAME_14=0;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5C.env;0;4
+FILE_NAME_15=0;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5C.env.test;0;4
+FILE_NAME_16=0;PHP;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Cpublic%5Cindex.php;0;4
+FILE_NAME_17=102;YAML;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Cconfig%5Cpackages%5Ctwig.yaml;0;4
+FILE_NAME_18=0;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cbase%5Cfull.html.twig;0;4
+FILE_NAME_19=0;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cbase%5Cmenu.html.twig;0;4
+FILE_NAME_20=642;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cbase%5Cliste_utilisateurs.html.twig;0;4
+FILE_NAME_21=4921;PHP;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Csrc%5CEntity%5CPeripherique.php;0;4
+FILE_NAME_22=2209;PHP;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Csrc%5CRepository%5CClientRepository.php;0;4
+FILE_NAME_23=0;PHP;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Csrc%5CRepository%5CUtilisateurRepository.php;0;4
+FILE_NAME_24=1465;PHP;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Csrc%5CRepository%5CUtilisateurViewRepository.php;0;4
+FILE_NAME_25=3446;Javascript;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Cassets%5Cinventory.js;0;4
+FILE_NAME_26=379;Javascript;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Cassets%5Cmanage.js;0;4
+FILE_NAME_27=0;Javascript;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Cassets%5Capp.js;0;4
+FILE_NAME_28=1849;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Cassets%5Cstyles%5Capp.scss;0;4
+FILE_NAME_29=0;YAML;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Cconfig%5Croutes%5Cdev%5Cframework.yaml;0;4
+FILE_NAME_30=0;YAML;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Cconfig%5Croutes%5Cannotations.yaml;0;4
+FILE_NAME_31=368;YAML;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Cconfig%5Croutes.yaml;0;4
+FILE_NAME_32=612;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Ct.melin%5CDocker%5Cinventory%5Cinventaire%5Ctemplates%5Cbase%5Cliste_ordinateurs.html.twig;0;4
 
 [VTE]
 last_dir=/home/tomsolete

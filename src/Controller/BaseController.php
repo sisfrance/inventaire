@@ -238,6 +238,7 @@ class BaseController extends AbstractController
 		$o=$this->getObjet($element);
 		$instance=$this->getDoctrine()->getRepository($o["entity"])->find($id);
 		$form=$this->createForm($o["formtype"],$instance);
+		/*$form->objet=$element;*/
 		return $this->render("forms/{$element}_form.html.twig",array(
 																	'id'=>$id,
 																	'form'=>$form->createView(),
@@ -245,6 +246,16 @@ class BaseController extends AbstractController
 								
 								));  
 	  }
+	  /**
+	 * @Route("/base/add_item", name="add_item")
+	 */
+	 public function add_item(Request $request):Response
+	 {
+		var_dump($request->request);die;
+		$response = new Response("coucou");
+		$response->send();
+		 
+	 }
 	  /**
 	  * @Route("/base/save", name="save")
 	  */
@@ -267,6 +278,7 @@ class BaseController extends AbstractController
 		if($request->isMethod('POST'))
 		{
 			$form->handleRequest($request);
+			print_r($form->isValid());
 			if($form->isSubmitted() && $form->isValid())
 			{
 				$instance=$form->getData();
@@ -278,6 +290,7 @@ class BaseController extends AbstractController
 			}
 			else
 			{
+				var_dump($form->getErrorsAsString());die;
 				return $this->render("forms/{$element}_form.html.twig",array(
 																	'id'=>$id,
 																	'form'=>$form->createView(),

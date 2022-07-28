@@ -124,6 +124,9 @@ $(document).ready(function(){
 			
 			$.get(url).done(function(response){
 				$("#target").empty().html(response);
+				$(".bouton-add").on("click",function(event){
+					  console.log("add item");
+				});
 				
 			});
 		  
@@ -162,6 +165,18 @@ $(document).ready(function(){
 		  
 	  }
 	  
+	  let add_item=function(event){
+		  event.preventDefault();
+		  event.stopPropagation();
+		  let objet =$(event.target).attr("data-objet");
+		  let url=["/base","add_item"].join("/");
+		  $.post(url,{"objet":objet})
+		  .done(function(response){
+			  popup.show(response);
+		  });
+	  }
+	  
+	 
 	 $("#add").on("click",function(event){
 		add(event);
 	 });

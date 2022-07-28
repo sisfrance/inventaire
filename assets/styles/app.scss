@@ -98,3 +98,15 @@ body {
 		pointer-events:none;
 	}
 }
+/*********************
+*  Formulaire
+*********************/
+.bouton-add{
+    display:inline-block;
+    width:25px;
+    height:auto;
+	background-image:url('images/add.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	cursor:pointer;
+}

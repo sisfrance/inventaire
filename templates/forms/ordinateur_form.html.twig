@@ -16,6 +16,9 @@
 		<div class="form-group row">
 			{{ form_label(child) }}
 			{{ form_widget(child) }}
+			{% if index in  ['modele','systeme','fournisseur','peripheriques','utilisateurs','emplacement','processeur','type_ordinateur'] %}
+				<span data-objet="{{index}}" class="bouton-add"></span><span>Ajouter {{ index }}</span>
+			{% endif %}
 		</div>
 	{% endfor %}
 	

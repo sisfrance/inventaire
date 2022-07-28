@@ -69,7 +69,7 @@ class ClientRepository extends ServiceEntityRepository
 				{
 					foreach($site->getEmplacements() as $emplacement)
 					{
-							$utilisateurs=array_merge($utilisateurs,(array) $emplacement->getUtilisateurs(array('nom'=>'ASC'))->toArray());
+							$utilisateurs=array_merge($utilisateurs, (array) $emplacement->getUtilisateurs(array('nom'=>'ASC'))->toArray());
 					}
 				}
 		}
